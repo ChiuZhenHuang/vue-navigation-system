@@ -57,6 +57,7 @@ import router from '@/router';
 import type { userData } from '@/types/userType';
 import { useNotificationStore } from '@/stores/notification';
 import ToastMessage from '@/components/toastMessage.vue';
+import { RouterLink } from 'vue-router';
 
 const notification = useNotificationStore();
 

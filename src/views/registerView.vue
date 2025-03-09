@@ -60,7 +60,7 @@
 import { ref } from 'vue';
 import { registerUser } from '@/services/firebaseService';
 import router from '@/router';
-
+import { RouterLink } from 'vue-router';
 const email = ref('');
 const userName = ref('');
 const password = ref('');

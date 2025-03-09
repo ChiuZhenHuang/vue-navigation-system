@@ -5,6 +5,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
+import { RouterView } from 'vue-router';
 import Navbar from '@/components/layout/Navbar.vue';
 import { getCookie } from '@/utils/methods';
 import { onMounted } from 'vue';

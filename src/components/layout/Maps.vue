@@ -311,7 +311,7 @@ const addMarker = (position, type) => {
 
 // 開始導航
 const startNavigation = async () => {
-  if (!selectedCar) {
+  if (!selectedCar.value) {
     console.log('沒選車款');
     notification.show('請選擇車種', 'error', 3000);
     return;
@@ -322,7 +322,7 @@ const startNavigation = async () => {
     window.open(url, '_blank');
     isNavigating.value = true;
 
-    if (selectedCar) {
+    if (selectedCar.value) {
       try {
         const action = {
           place: searchInput.value,
