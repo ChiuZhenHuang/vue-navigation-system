@@ -40,6 +40,10 @@ const router = createRouter({
           path: 'user-info',
           component: () => import('@/components/layout/UserInfo.vue'),
         },
+        {
+          path: 'car-setting',
+          component: () => import('@/components/layout/CarSetting.vue'),
+        },
       ],
     },
   ],

@@ -74,6 +74,7 @@ import { useNotificationStore } from '@/stores/notification';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import { useUserStore } from '@/stores/userStore';
 import ToastMessage from '../toastMessage.vue';
+// import { CarTypes } from '@/types/carTypes';
 
 const props = defineProps({
   userId: {
@@ -100,7 +101,7 @@ const selectedCar = computed(() => {
 
 onMounted(async () => {
   await getUserRecords(props.userId);
-  await getUsersData(props.userId);
+  await getUsersData();
   const carTypes = await getCarTypes();
   totalCarTypes.value = carTypes;
 });

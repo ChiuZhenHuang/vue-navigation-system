@@ -14,7 +14,7 @@ import { useUserStore } from '@/stores/userStore';
 const userRecordStore = useUserRecordStore();
 const userStore = useUserStore();
 
-const getTokenAndUid = async () => {
+const getTokenAndUid = async (): Promise<{ token: string; uid: string } | undefined> => {
   const token = getCookie('token') ?? '';
   const uid = getCookie('uid') ?? '';
 

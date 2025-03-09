@@ -1,15 +1,15 @@
 <template>
-  <v-container class="ma-4">
+  <v-container fluid class="">
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
-      <v-col cols="12" sm="8" class="d-flex justify-center align-center">
-        <v-avatar size="100" class="border-4 border-white bg-grey-lighten-2">
+      <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
+        <v-avatar size="100" class="border-4 border-primary bg-grey-lighten-2">
           <span class="text-h4">{{ userRecord.name ? String(userRecord.name)[0] : '' }}</span>
         </v-avatar>
       </v-col>
 
       <!-- 使用者名稱部分 -->
-      <v-col cols="12" sm="16" class="d-flex justify-center align-center">
+      <v-col cols="12" sm="4" class="d-flex justify-center align-center">
         <div class="w-100">
           <div class="d-flex justify-center mt-2">
             <p class="font-weight-bold text-h5">{{ userRecord.name }}</p>
@@ -19,23 +19,20 @@
 
       <!-- 導航紀錄部分 -->
       <v-col cols="12" class="d-flex justify-center align-center">
-        <div class="w-100 mt-4 flex-1" style="max-height: 60vh">
+        <div class="w-100 flex-1">
           <v-divider class="mb-4" color="grey-lighten-2"></v-divider>
 
-          <p
-            class="my-2 py-1 text-center rounded-lg text-white"
-            style="background-color: #a1754d; border: 2px solid white; width: 100px"
-          >
-            導航紀錄
-          </p>
+          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary w-sm-auto">導航紀錄</p>
 
           <div v-if="userRecord.records && userRecord.records.length > 0">
             <v-card
               v-for="(item, index) in userRecord.records"
               :key="index"
-              class="my-2"
-              :title="item.action.place"
+              :class="`my-2 ${index % 2 === 0 ? 'bg-grey-lighten-2' : ''}`"
             >
+              <template v-slot:title>
+                <span class="text-blue-darken-4">{{ item.action.place }}</span>
+              </template>
               <v-card-text>
                 <p>距離：{{ item.action.distance }}</p>
                 <p>花費時間：{{ item.action.time }}</p>
@@ -62,7 +59,7 @@
             <div>您尚未有導航紀錄！</div>
             <v-btn
               class="mt-2 w-100 w-sm-auto"
-              color="orange-lighten-4"
+              color="primary-lighten-4"
               @click="$router.push('/layout/home')"
             >
               開始導航

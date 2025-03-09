@@ -159,6 +159,7 @@ const handleMenuClick = (title: string) => {
     console.log('跳轉到登出頁面');
   } else if (title === '車款設置') {
     console.log('跳轉到車款設置');
+    router.push('/layout/car-setting');
     // 跳轉到車款設置頁面
   }
 };
