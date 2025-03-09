@@ -81,19 +81,19 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import ToastMessage from '../toastMessage.vue';
 import { useNotificationStore } from '@/stores/notification';
 import { useRoute } from 'vue-router';
-
 import { useDisplay } from 'vuetify';
+import { useUserRecordStore } from '@/stores/userRecordStore';
 
 const display = useDisplay();
 const isMobile = display.smAndDown;
 const route = useRoute();
 
 const notification = useNotificationStore();
-
+const userRecordStore = useUserRecordStore();
 onMounted(() => {
   const msg = window.history.state?.msg as string;
   if (msg) {
@@ -101,12 +101,14 @@ onMounted(() => {
   }
 });
 
-const { userName } = defineProps(['userName']);
-
-const firstName = computed(() => (userName ? String(userName)[0] : ''));
+const firstName = computed(() =>
+  userRecordStore.userRecord.name ? String(userRecordStore.userRecord.name)[0] : ''
+);
 
 const items = computed(() =>
-  userName === '管理員' ? [{ title: '車款設置' }, { title: '登出' }] : [{ title: '登出' }]
+  userRecordStore.userRecord.name === '管理員'
+    ? [{ title: '車款設置' }, { title: '登出' }]
+    : [{ title: '登出' }]
 );
 
 // 控制導航抽屜的顯示
@@ -119,7 +121,7 @@ const menuItems = [
   { title: '每週任務', icon: 'mdi-calendar-check', route: '/layout/task' },
   { title: '排行榜', icon: 'mdi-trophy', route: '/layout/rank' },
   { title: '個人資訊', icon: 'mdi-account-circle', route: '/layout/user-info' },
-  { title: '登出', icon: 'mdi-logout', route: '/layout/home' },
+  { title: '登出', icon: 'mdi-logout', route: '/login' },
 ];
 
 const isActiveVariant = (route: string) => {
@@ -133,14 +135,19 @@ const isActive = (route: string) => {
 };
 
 // 跳轉方法
-const navigateTo = (path: string) => {
+const navigateTo = async (path: string) => {
+  if (path === '/login') handleMenuClick('登出');
+
   if (route.path === path) {
-    // 強制重新導航到相同頁面，這會刷新頁面
-    router.push({ path: '/redirect' }).then(() => {
-      router.push(path);
+    // 方法 1：使用 replace
+    await router.replace(path);
+    // 或者強制重新加載組件
+    nextTick(() => {
+      // 觸發組件重新渲染
+      router.go(0);
     });
   } else {
-    router.push(path);
+    await router.push(path);
   }
 };
 
@@ -149,6 +156,7 @@ const handleMenuClick = (title: string) => {
     document.cookie = 'token=; max-age=0; path=/;';
     document.cookie = 'uid=; max-age=0; path=/;';
     router.replace({ name: 'login', state: { msg: '登出成功！' } });
+    console.log('跳轉到登出頁面');
   } else if (title === '車款設置') {
     console.log('跳轉到車款設置');
     // 跳轉到車款設置頁面

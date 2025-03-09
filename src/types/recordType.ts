@@ -42,3 +42,12 @@ export interface TaskOptions {
   target: string;
   point: string;
 }
+
+// ----------------
+
+export interface TotalUserDataRecord {
+  email: string;
+  id?: string;
+  name: string;
+  records?: ActionResponse[];
+}

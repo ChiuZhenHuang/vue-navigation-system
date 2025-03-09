@@ -1,21 +1,20 @@
 <template>
-  <Navbar :user-name="userInfo.userName" />
-  <router-view />
+  <Navbar />
+  <router-view :key="$route.fullPath" />
 </template>
 
 <script setup lang="ts">
 import router from '@/router';
 import Navbar from '@/components/layout/Navbar.vue';
 import { getCookie } from '@/utils/methods';
-import { onMounted, ref } from 'vue';
-import { getUsersData, getUserRecords } from '@/services/firebaseService';
+import { onMounted } from 'vue';
+import { useUserRecordStore } from '@/stores/userRecordStore';
+import { useUserStore } from '@/stores/userStore';
 
-const userInfo = ref({
-  email: '',
-  userName: '',
-});
+const userRecordStore = useUserRecordStore();
+const userStore = useUserStore();
 
-const getUserData = async () => {
+const getTokenAndUid = async () => {
   const token = getCookie('token') ?? '';
   const uid = getCookie('uid') ?? '';
 
@@ -24,25 +23,14 @@ const getUserData = async () => {
     router.push('/login');
     return;
   }
-
-  if (uid) {
-    try {
-      const totalUserData = await getUsersData();
-      const { email, name } = await getUserRecords(uid);
-
-      // 更新 userInfo 的值
-      userInfo.value.email = email;
-      userInfo.value.userName = name;
-
-      console.log({ totalUserData });
-      console.log({ email, name });
-    } catch (error) {
-      console.error('取得用戶資料錯誤', error);
-    }
-  }
+  if (token && uid) return { token, uid };
 };
 
-onMounted(() => {
-  getUserData();
+onMounted(async () => {
+  const result = await getTokenAndUid();
+  if (result?.token && result?.uid) {
+    userStore.getUserDataApi();
+    userRecordStore.getUserRecordApi(result.uid);
+  }
 });
 </script>

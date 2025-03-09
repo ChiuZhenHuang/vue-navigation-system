@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia';
+import { getUsersData } from '@/services/firebaseService';
+import type { TotalUserDataRecord } from '@/types/recordType';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    email: '',
-    userName: '',
+    totalUserData: [] as TotalUserDataRecord[],
   }),
   actions: {
-    setUserInfo(email: string, userName: string) {
-      this.email = email;
-      this.userName = userName;
+    async getUserDataApi() {
+      const userData = await getUsersData();
+      console.log('所有使用者資料(含紀錄)', userData);
+      this.totalUserData = userData;
     },
   },
 });

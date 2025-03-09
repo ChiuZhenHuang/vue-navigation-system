@@ -14,27 +14,36 @@
 
 <script setup>
 import Maps from './Maps.vue';
-import { ref, onMounted } from 'vue';
-import { getCarTypes } from '@/services/firebaseService';
+import { ref, onMounted, computed, watch } from 'vue';
 import { getCookie } from '@/utils/methods';
+import { useCarTypeStore } from '@/stores/carTypeStor';
+
+const carTypeStore = useCarTypeStore();
+const userId = ref(null);
+const selectedCar = ref(null);
+
+// 移除原本的 carItems ref，改用 computed 從 store 獲取數據
+const carItems = computed(() => carTypeStore.carType.map(carType => carType.carType));
+
+watch(
+  () => carTypeStore.carType,
+  newValue => {
+    if (newValue.length > 0 && !selectedCar.value) {
+      selectedCar.value = newValue[0].carType;
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
-  getCarTypesData();
+  // 在組件掛載時獲取車型數據
+  carTypeStore.getCarTypeApi();
   const retrievedUid = getCookie('uid') ?? '';
   userId.value = retrievedUid;
 });
 
-const carItems = ref([]); // 車款列表
-const userId = ref(null); // 用戶ID
-const selectedCar = ref(null); // 被選擇車款
-
-const getCarTypesData = async () => {
-  const carTypes = await getCarTypes();
-  carItems.value = carTypes.map(carType => carType.carType);
-};
-console.log(carItems.value);
-
 const handleSelection = value => {
   console.log('Selected car:', value);
+  selectedCar.value = value;
 };
 </script>

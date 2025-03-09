@@ -54,7 +54,6 @@
 import { ref, onMounted } from 'vue';
 import { loginUser } from '@/services/firebaseService';
 import router from '@/router';
-import { useUserStore } from '@/stores/userStore';
 import type { userData } from '@/types/userType';
 import { useNotificationStore } from '@/stores/notification';
 import ToastMessage from '@/components/toastMessage.vue';
@@ -72,7 +71,6 @@ const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const errorMessage = ref('');
-const userStore = useUserStore();
 
 const formRules = {
   emailRules: [
@@ -90,18 +88,17 @@ const handleLogin = async () => {
     console.log('登入:', { email: email.value, password: password.value });
     const result = await loginUser({ email: email.value, password: password.value });
     if (result.success) {
-      console.log('登入成功:', result);
-      const { token, uid, email, userName } = result as Required<userData>;
-
+      const { token, uid } = result as Required<userData>;
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
       document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
 
-      userStore.setUserInfo(email, userName);
       router.push({ path: 'layout/home', state: { msg: '登入成功！' } });
+      console.log('登入成功:', result);
     } else {
       console.log('登入失敗:', result.error);
+      notification.show('登入失敗', 'error', 3000);
       errorMessage.value = result.error || '登入失敗';
     }
   } catch (err: unknown) {

@@ -3,6 +3,7 @@ import { ref, set, get, push, update } from 'firebase/database';
 import { auth, db } from './firebaseConfig';
 import type { User } from '@/types/firebaseType';
 import type { userData } from '@/types/userType';
+import type { ActionResponse, TotalUserDataRecord } from '@/types/recordType';
 
 // 註冊用戶
 export const registerUser = async ({
@@ -87,9 +88,10 @@ export const getUsersData = async () => {
             id: recordKey,
           }))
         : [];
+
       return { id: key, name: userData.name, email: userData.email, records };
     });
-    return usersArray;
+    return usersArray as TotalUserDataRecord[];
   } catch (error: unknown) {
     throw new Error(error instanceof Error ? error.message : 'An unknown error occurred');
   }
@@ -119,8 +121,8 @@ export const saveUserRecord = async ({
 // 獲取用戶記錄
 export const getUserRecords = async (
   userId: string
-): Promise<{ name: string; email: string; records: { id: string }[] | null }> => {
-  if (!userId) return { name: '', email: '', records: null };
+): Promise<{ name: string; email: string; records: ActionResponse[] }> => {
+  if (!userId) return { name: '', email: '', records: [] };
 
   try {
     const snapshot = await get(ref(db, `users/${userId}`));
@@ -134,9 +136,10 @@ export const getUserRecords = async (
             id: key,
           }))
         : []; // 確保當 records 為 null 時，會回傳空陣列
-      return { name, email, records: recordsArray };
+
+      return { name, email, records: recordsArray as ActionResponse[] };
     }
-    return { name: '', email: '', records: null }; // 如果沒有找到資料，返回空資料結構
+    return { name: '', email: '', records: [] }; // 如果沒有找到資料，返回空資料結構
   } catch (error: unknown) {
     console.error('Error fetching user records:', error);
     throw new Error(error instanceof Error ? error.message : 'An unknown error occurred');

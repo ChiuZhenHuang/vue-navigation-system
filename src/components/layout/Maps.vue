@@ -60,15 +60,20 @@
       </v-col>
     </v-row>
   </v-card>
+  <ToastMessage />
 </template>
 
 <script setup>
 import { ref, onMounted, watch, onUnmounted, computed } from 'vue';
 import { Loader } from '@googlemaps/js-api-loader';
-import { getCarTypes } from '@/services/firebaseService'; // getCarTypes
-import { saveUserRecord } from '@/services/firebaseService'; // useSaveRecord
-import { getUserRecords } from '@/services/firebaseService'; // useGetUserRecord
-import { getUsersData } from '@/services/firebaseService'; //useGetUsersData
+import { getCarTypes } from '@/services/firebaseService';
+import { saveUserRecord } from '@/services/firebaseService';
+import { getUserRecords } from '@/services/firebaseService';
+import { getUsersData } from '@/services/firebaseService';
+import { useNotificationStore } from '@/stores/notification';
+import { useUserRecordStore } from '@/stores/userRecordStore';
+import { useUserStore } from '@/stores/userStore';
+import ToastMessage from '../toastMessage.vue';
 
 const props = defineProps({
   userId: {
@@ -77,12 +82,16 @@ const props = defineProps({
   },
   selectCarType: {
     type: String,
-    required: true,
+    required: false,
+    default: '',
   },
 });
 
 const totalCarTypes = ref([]);
 
+const notification = useNotificationStore();
+const userRecordStore = useUserRecordStore();
+const userStore = useUserStore();
 const selectedCar = computed(() => {
   if (!props.selectCarType) return null;
   const selectedCar = totalCarTypes.value.find(car => car.value === props.selectCarType);
@@ -96,18 +105,6 @@ onMounted(async () => {
   totalCarTypes.value = carTypes;
 });
 
-// watch(
-//   selectedCar,
-//   newValue => {
-//     console.log('selectedCar 變化:', newValue);
-//     console.log('selectedCar 詳細資訊:', {
-//       value: newValue?.value,
-//       oil: newValue?.oil,
-//       完整對象: newValue,
-//     });
-//   },
-//   { immediate: true }
-// );
 // 定義狀態
 const isLoaded = ref(false);
 const currentPosition = ref(null); // 當前位置
@@ -125,21 +122,6 @@ const searchInputRef = ref(null);
 const autoComplete = ref(null);
 const directionsService = ref(null);
 const directionsRenderer = ref(null);
-
-// 使用 Vuetify 的 snackbar 代替 ant-design-vue 的 message
-const snackbar = ref({
-  show: false,
-  text: '',
-  color: 'success',
-});
-
-const showSnackbar = (text, color = 'success') => {
-  snackbar.value = {
-    show: true,
-    text,
-    color,
-  };
-};
 
 // Google Maps API 加載器
 const loader = new Loader({
@@ -160,7 +142,7 @@ onMounted(async () => {
     }, 0);
   } catch (error) {
     console.error('Failed to load Google Maps:', error);
-    showSnackbar('無法載入 Google 地圖，請檢查您的網路連接', 'error');
+    notification.show('無法載入 Google 地圖，請檢查您的網路連接', 'error', 3000);
   }
 });
 
@@ -253,7 +235,7 @@ const calculateRoute = (origin, destination) => {
           duration: route.duration?.text || '',
         };
       } else {
-        showSnackbar('無法計算路線，請嘗試其他目的地', 'error');
+        notification.show('無法計算路線，請嘗試其他目的地', 'error', 3000);
       }
     }
   );
@@ -282,11 +264,11 @@ const getCurrentLocation = () => {
           calculateRoute(pos, selectedPlace.value);
         }
 
-        showSnackbar('已獲取您的當前位置');
+        // notification.show('已獲取您的當前位置', 'success', 3000);
       },
       error => {
         isLocating.value = false;
-        showSnackbar(`無法取得您的位置: ${error.message}`, 'error');
+        notification.show(`無法取得您的位置: ${error.message}`, 'error', 3000);
       },
       {
         enableHighAccuracy: true,
@@ -296,7 +278,7 @@ const getCurrentLocation = () => {
     );
   } else {
     isLocating.value = false;
-    showSnackbar('瀏覽器不支援位置服務', 'error');
+    notification.show('瀏覽器不支援位置服務', 'error', 3000);
   }
 };
 
@@ -328,6 +310,12 @@ const addMarker = (position, type) => {
 
 // 開始導航
 const startNavigation = async () => {
+  if (!selectedCar) {
+    console.log('沒選車款');
+    notification.show('請選擇車種', 'error', 3000);
+    return;
+  }
+
   if (currentPosition.value && selectedPlace.value) {
     const url = `https://www.google.com/maps/dir/?api=1&origin=${currentPosition.value.lat},${currentPosition.value.lng}&destination=${selectedPlace.value.lat},${selectedPlace.value.lng}&travelmode=driving`;
     window.open(url, '_blank');
@@ -342,8 +330,6 @@ const startNavigation = async () => {
           carType: selectedCar.value.value ?? '未知車款',
           oil: selectedCar.value.oil ?? '未知',
         };
-        console.log('action', action);
-        console.log('內部props.userId ', props.userId);
 
         const result = await saveUserRecord({
           userId: props.userId,
@@ -351,16 +337,17 @@ const startNavigation = async () => {
           timestamp: Date.now(),
         });
         if (result.success) {
-          showSnackbar('已儲存路線資料');
+          userRecordStore.getUserRecordApi(props.userId); // 再取一次使用者資料
+          userStore.getUserDataApi(); // 再取一次所有資料
+          notification.show('已儲存路線資料', 'success', 3000);
         } else {
-          showSnackbar('儲存路線資料失敗', 'error');
+          notification.show('儲存路線資料失敗', 'error', 3000);
         }
       } catch (error) {
-        showSnackbar('儲存路線資料失敗', 'error');
         console.error('Error saving navigation data:', error);
       }
     } else {
-      showSnackbar('抓取車種資料失敗', 'error');
+      notification.show('請選擇車種', 'error', 3000);
     }
   }
 };
