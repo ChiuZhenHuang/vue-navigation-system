@@ -35,7 +35,19 @@
                 class="mb-4"
               ></v-text-field>
 
-              <v-btn color="primary" block type="submit" class="mb-4"> 登入 </v-btn>
+              <v-btn color="primary" block type="submit" class="mb-4" :disabled="isLoading">
+                <div class="d-flex align-center justify-center">
+                  <v-progress-circular
+                    v-if="isLoading"
+                    indeterminate
+                    size="20"
+                    width="2"
+                    color="white"
+                    class="mr-2"
+                  ></v-progress-circular>
+                  登入
+                </div>
+              </v-btn>
 
               <div class="text-center py-2">
                 <router-link to="/register" class="text-decoration-none">
@@ -63,15 +75,14 @@ const notification = useNotificationStore();
 
 onMounted(() => {
   const msg = window.history.state?.msg as string;
-  if (msg) {
-    notification.show(msg, 'success', 3000);
-  }
+  if (msg) notification.show(msg, 'success', 3000);
 });
 
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const errorMessage = ref('');
+const isLoading = ref(false);
 
 const formRules = {
   emailRules: [
@@ -85,6 +96,7 @@ const formRules = {
 };
 
 const handleLogin = async () => {
+  isLoading.value = true;
   try {
     console.log('登入:', { email: email.value, password: password.value });
     const result = await loginUser({ email: email.value, password: password.value });
@@ -105,6 +117,8 @@ const handleLogin = async () => {
   } catch (err: unknown) {
     const error = err instanceof Error ? err.message : '發生未知錯誤';
     errorMessage.value = error;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>

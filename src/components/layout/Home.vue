@@ -16,7 +16,7 @@
 import Maps from './Maps.vue';
 import { ref, onMounted, computed, watch } from 'vue';
 import { getCookie } from '@/utils/methods';
-import { useCarTypeStore } from '@/stores/carTypeStor';
+import { useCarTypeStore } from '@/stores/carTypeStore';
 
 const carTypeStore = useCarTypeStore();
 const userId = ref<string | null>(null);

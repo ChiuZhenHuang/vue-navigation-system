@@ -5,7 +5,6 @@
         <v-card class="elevation-12 rounded-lg">
           <v-toolbar color="primary" dark flat class="py-4">
             <div class="d-flex flex-column align-center justify-center text-center w-100">
-              <!-- <img src="@/assets/images/navigate.png" alt="navigate" width="60" height="60" /> -->
               <div class="text-h5 mb-2">註冊會員</div>
             </div>
           </v-toolbar>
@@ -43,7 +42,19 @@
                 class="mb-4"
               ></v-text-field>
 
-              <v-btn color="primary" block type="submit" class="mb-4"> 註冊 </v-btn>
+              <v-btn color="primary" block type="submit" class="mb-4" :disabled="isLoading">
+                <div class="d-flex align-center justify-center">
+                  <v-progress-circular
+                    v-if="isLoading"
+                    indeterminate
+                    size="20"
+                    width="2"
+                    color="white"
+                    class="mr-2"
+                  ></v-progress-circular>
+                  註冊
+                </div>
+              </v-btn>
 
               <div class="text-center py-2">
                 <router-link to="/login" class="text-decoration-none"> 返回登入頁面 </router-link>
@@ -61,11 +72,15 @@ import { ref } from 'vue';
 import { registerUser } from '@/services/firebaseService';
 import router from '@/router';
 import { RouterLink } from 'vue-router';
+import { useNotificationStore } from '@/stores/notification';
+
 const email = ref('');
 const userName = ref('');
 const password = ref('');
 const showPassword = ref(false);
-const errorMessage = ref('');
+const isLoading = ref(false);
+
+const notification = useNotificationStore();
 
 const formRules = {
   userNameRules: [
@@ -85,6 +100,7 @@ const formRules = {
 const handleRegister = async () => {
   try {
     console.log('註冊:', { email: email.value, password: password.value });
+    isLoading.value = true;
     const result = await registerUser({
       name: userName.value,
       email: email.value,
@@ -95,12 +111,14 @@ const handleRegister = async () => {
 
       router.push({ name: 'login', state: { msg: '註冊成功！前往登入' } });
     } else {
-      console.log('登入失敗:', result);
-      // errorMessage.value = result.error || '登入失敗';
+      console.log('註冊失敗:', result);
+      notification.show('註冊失敗', 'error', 3000);
     }
   } catch (err: unknown) {
-    const error = err instanceof Error ? err.message : '發生未知錯誤';
-    errorMessage.value = error;
+    console.log('註冊過程發生錯誤:', err);
+    notification.show('註冊過程發生錯誤', 'error', 3000);
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>

@@ -13,7 +13,6 @@ export interface ActionResponse {
     carType: string;
     oil: string;
     time: string;
-    id?: string;
   };
   timestamp: number;
   id: string;
@@ -47,7 +46,7 @@ export interface TaskOptions {
 
 export interface TotalUserDataRecord {
   email: string;
-  id?: string;
+  id: string;
   name: string;
   records?: ActionResponse[];
 }

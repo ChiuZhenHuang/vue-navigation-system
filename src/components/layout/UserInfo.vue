@@ -1,10 +1,12 @@
 <template>
-  <v-container fluid class="">
+  <v-container fluid>
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
         <v-avatar size="100" class="border-4 border-primary bg-grey-lighten-2">
-          <span class="text-h4">{{ userRecord.name ? String(userRecord.name)[0] : '' }}</span>
+          <span class="text-h4 font-weight-bold">{{
+            userRecord.name ? String(userRecord.name)[0] : ''
+          }}</span>
         </v-avatar>
       </v-col>
 
@@ -31,14 +33,17 @@
               :class="`my-2 ${index % 2 === 0 ? 'bg-grey-lighten-2' : ''}`"
             >
               <template v-slot:title>
-                <span class="text-blue-darken-4">{{ item.action.place }}</span>
+                <span class="text-grey-darken-4 font-weight-bold text-h6">{{
+                  item.action.place
+                }}</span>
               </template>
               <v-card-text>
                 <p>距離：{{ item.action.distance }}</p>
                 <p>花費時間：{{ item.action.time }}</p>
                 <p>使用車種：{{ item.action.carType }}</p>
                 <p>
-                  預估油費：NT${{
+                  預估油費：NT$
+                  {{
                     formatToThousand(
                       calculateOilMoney(
                         item.action.distance.split(' 公里')[0],

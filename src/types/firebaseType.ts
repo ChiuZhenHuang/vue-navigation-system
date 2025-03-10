@@ -9,6 +9,7 @@ export interface Action {
 export interface UserRecord {
   action: Action;
   timestamp: number;
+  id: string;
 }
 
 export interface User {

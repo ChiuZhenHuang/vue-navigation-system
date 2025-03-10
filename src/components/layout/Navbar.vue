@@ -96,9 +96,7 @@ const notification = useNotificationStore();
 const userRecordStore = useUserRecordStore();
 onMounted(() => {
   const msg = window.history.state?.msg as string;
-  if (msg) {
-    notification.show(msg, 'success', 3000);
-  }
+  if (msg) notification.show(msg, 'success', 3000);
 });
 
 const firstName = computed(() =>
