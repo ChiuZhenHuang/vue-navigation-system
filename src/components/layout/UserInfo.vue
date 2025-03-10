@@ -24,7 +24,9 @@
         <div class="w-100 flex-1">
           <v-divider class="mb-4" color="grey-lighten-2"></v-divider>
 
-          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary w-sm-auto">導航紀錄</p>
+          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary" style="width: 160px">
+            導航紀錄
+          </p>
 
           <div v-if="userRecord.records && userRecord.records.length > 0">
             <v-card
@@ -80,42 +82,8 @@
 import { computed } from 'vue';
 import { calculateOilMoney, formatToThousand } from '@/utils/methods';
 import { useUserRecordStore } from '@/stores/userRecordStore';
+
 const userRecordStore = useUserRecordStore();
 
 const userRecord = computed(() => userRecordStore.userRecord);
-
-// 定義介面
-interface Action {
-  place: string;
-  distance: string;
-  carType: string;
-  oil: number;
-  time: string;
-}
-
-interface ActionResponse {
-  action: Action;
-  timestamp: number;
-}
-
-// 定義 props
-defineProps<{
-  firstName: string;
-  userName: string;
-  record: ActionResponse[];
-}>();
 </script>
-
-<style scoped>
-.border-white {
-  border: 4px solid white;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.w-sm-auto {
-  width: 160px !important; /* 對應原本 Tailwind 的 sm:w-40 */
-}
-</style>

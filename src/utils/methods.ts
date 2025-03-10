@@ -1,8 +1,4 @@
-interface TaskOptions {
-  title: string;
-  target: string;
-  point: string;
-}
+import type { TaskOptions } from '@/types/recordType';
 
 // 千分位
 export const formatToThousand = (num: number | string) => {

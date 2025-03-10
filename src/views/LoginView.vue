@@ -4,11 +4,15 @@
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-card class="elevation-12 rounded-lg">
-          <v-toolbar color="primary" dark flat class="py-4">
+          <v-toolbar color="primary" dark flat>
+            <div class="w-100 d-flex justify-center align-center">
+              <img src="@/assets/images/navigate.png" alt="navigate" width="50" height="50" />
+            </div>
+          </v-toolbar>
+          <v-toolbar color="primary" dark flat height="80">
             <div class="d-flex flex-column align-center justify-center text-center w-100">
-              <!-- <img src="@/assets/images/navigate.png" alt="navigate" width="60" height="60" /> -->
-              <div class="text-h5 mb-2">歡迎使用導航紀錄系統</div>
-              <div class="text-subtitle-1">請登入開始您的旅程</div>
+              <div class="text-h5 mb-2 font-weight-bold">歡迎使用導航紀錄系統</div>
+              <div class="text-subtitle-2 opacity-60">請登入開始您的旅程</div>
             </div>
           </v-toolbar>
           <v-card-text>

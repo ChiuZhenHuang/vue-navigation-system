@@ -1,5 +1,6 @@
 <template>
   <Navbar />
+  <BreadCrunms />
   <router-view :key="$route.fullPath" />
 </template>
 
@@ -7,6 +8,7 @@
 import router from '@/router';
 import { RouterView } from 'vue-router';
 import Navbar from '@/components/layout/Navbar.vue';
+import BreadCrunms from '@/components/layout/BreadCrunms.vue';
 import { getCookie } from '@/utils/methods';
 import { onMounted } from 'vue';
 import { useUserRecordStore } from '@/stores/userRecordStore';

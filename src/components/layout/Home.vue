@@ -10,6 +10,7 @@
   </div>
 
   <Maps v-if="userId" :user-id="userId" :select-car-type="selectedCar" />
+  <p v-else>導入地圖中...</p>
 </template>
 
 <script setup lang="ts">

@@ -3,9 +3,14 @@
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-card class="elevation-12 rounded-lg">
-          <v-toolbar color="primary" dark flat class="py-4">
+          <v-toolbar color="primary" dark flat>
+            <div class="w-100 d-flex justify-center align-center">
+              <img src="@/assets/images/navigate.png" alt="navigate" width="50" height="50" />
+            </div>
+          </v-toolbar>
+          <v-toolbar color="primary" dark flat height="60">
             <div class="d-flex flex-column align-center justify-center text-center w-100">
-              <div class="text-h5 mb-2">註冊會員</div>
+              <div class="text-h5 mb-2 font-weight-bold">註冊會員</div>
             </div>
           </v-toolbar>
           <v-card-text>

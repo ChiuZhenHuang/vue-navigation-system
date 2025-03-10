@@ -7,13 +7,7 @@ export interface Action {
 }
 
 export interface ActionResponse {
-  action: {
-    place: string;
-    distance: string;
-    carType: string;
-    oil: string;
-    time: string;
-  };
+  action: Action;
   timestamp: number;
   id: string;
 }
@@ -32,8 +26,8 @@ export interface totalRecords {
 
 export interface TotalRecord {
   totalDistance: string;
+  totalCount: string;
   totalOil: string;
-  toalCount: number;
 }
 
 export interface TaskOptions {
@@ -49,4 +43,10 @@ export interface TotalUserDataRecord {
   id: string;
   name: string;
   records?: ActionResponse[];
+}
+
+export interface TaskProgress {
+  distance: string;
+  count: string;
+  oil: string;
 }
