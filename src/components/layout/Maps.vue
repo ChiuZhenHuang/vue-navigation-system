@@ -381,3 +381,50 @@ onUnmounted(() => {
   autoComplete.value = null;
 });
 </script>
+
+<style>
+/* Google Places Autocomplete 下拉選單樣式 */
+.pac-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  margin-top: 4px;
+  font-family: inherit;
+}
+
+.pac-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  border-top: 1px solid #f5f5f5;
+}
+
+.pac-item:first-child {
+  border-top: none;
+}
+
+.pac-item:hover {
+  background-color: #f5f5f5;
+}
+
+.pac-item-query {
+  font-size: 14px;
+  color: #333;
+}
+
+.pac-matched {
+  font-weight: bold;
+  color: #1867c0;
+}
+
+.pac-icon {
+  margin-right: 8px;
+}
+
+/* 去除預設的黃色背景 */
+.pac-item-selected,
+.pac-item-selected:hover {
+  background-color: #e3f2fd;
+}
+</style>

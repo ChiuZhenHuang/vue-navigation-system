@@ -10,7 +10,10 @@ export const useUserRecordStore = defineStore('userRecord', {
     async getUserRecordApi(uid: string) {
       const userRecord = await getUserRecords(uid);
       console.log('本使用者紀錄', userRecord);
-      this.userRecord = userRecord;
+      this.userRecord = {
+        ...userRecord,
+        id: uid,
+      };
     },
   },
 });
