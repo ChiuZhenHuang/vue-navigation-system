@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
-        <v-avatar size="100" class="border-4 border-primary bg-grey-lighten-2">
-          <span class="text-h4 font-weight-bold">{{
+        <v-avatar size="100" class="border-4 border-primary bg-grey">
+          <span class="text-h4 font-weight-bold text-white">{{
             userRecord.name ? String(userRecord.name)[0] : ''
           }}</span>
         </v-avatar>
@@ -22,7 +22,7 @@
       <!-- 導航紀錄部分 -->
       <v-col cols="12" class="d-flex justify-center align-center">
         <div class="w-100 flex-1">
-          <v-divider class="mb-4" color="grey-lighten-2"></v-divider>
+          <v-divider class="mb-4" color="black" style="border-width: 1px"></v-divider>
 
           <p class="my-2 py-1 text-center rounded-lg text-white bg-primary" style="width: 160px">
             導航紀錄

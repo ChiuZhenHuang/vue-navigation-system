@@ -40,7 +40,7 @@
                 </v-btn>
               </v-toolbar-title>
 
-              <v-avatar color="info" size="large" v-bind="props">
+              <v-avatar color="info border-md border-white" size="large" v-bind="props">
                 {{ firstName }}
               </v-avatar>
             </div>

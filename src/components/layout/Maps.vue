@@ -58,6 +58,16 @@
           </v-card-actions>
         </v-card>
       </v-col>
+
+      <v-col cols="12" md="4" v-else>
+        <v-card class="pa-4">
+          <v-card-actions>
+            <v-btn block disabled color="primary" prepend-icon="mdi-navigation">
+              請選擇導航地點及定位
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
     </v-row>
   </v-card>
   <ToastMessage />

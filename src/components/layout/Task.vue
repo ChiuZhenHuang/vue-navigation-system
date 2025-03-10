@@ -39,6 +39,7 @@
             <div class="ms-4 text-h6">{{ percentProgress?.distance }}%</div>
           </div>
           <v-btn color="white" variant="outlined" class="text-white mt-2">
+            <v-icon start icon="mdi-star" class="me-1"></v-icon>
             {{ taskOptions[0].point }}積分
           </v-btn>
         </v-sheet>
@@ -94,48 +95,48 @@
         </v-sheet>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-card class="py-4 text-center d-flex flex-column bg-primary rounded-lg">
+          <v-card-title
+            class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
+          >
+            <v-icon icon="mdi-crown" class="mr-2" color="amber"></v-icon>
+            本週成就
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="4" class="d-flex justify-center">
+                <div>
+                  <div class="text-slate-500">完成任務</div>
+                  <div class="text-white font-weight-bold text-h6">{{ overachievedCount }}/3</div>
+                </div>
+              </v-col>
+              <v-col cols="4" class="d-flex justify-center">
+                <div>
+                  <div class="text-slate-500">累計里程</div>
+                  <div class="text-white font-weight-bold text-h6">
+                    {{ totalRecord?.totalDistance }} km
+                  </div>
+                </div>
+              </v-col>
+              <v-col cols="4" class="d-flex justify-center">
+                <div>
+                  <div class="text-slate-500">總任務積分</div>
+                  <div
+                    class="text-white font-weight-bold text-h6 d-flex justify-center align-center"
+                  >
+                    <v-icon icon="mdi-trophy" class="mr-2" color="amber"></v-icon>
+                    {{ formatToThousand(totalPoints) }}
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
-
-  <v-row>
-    <v-col cols="12">
-      <v-card class="mx-4 py-4 text-center d-flex flex-column bg-primary">
-        <v-card-title
-          class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
-        >
-          <v-icon icon="mdi-crown" class="mr-2" color="amber"></v-icon>
-          本週成就
-        </v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="4" class="d-flex justify-center">
-              <div>
-                <div class="text-slate-500">完成任務</div>
-                <div class="text-white font-weight-bold text-h6">{{ overachievedCount }}/3</div>
-              </div>
-            </v-col>
-            <v-col cols="4" class="d-flex justify-center">
-              <div>
-                <div class="text-slate-500">累計里程</div>
-                <div class="text-white font-weight-bold text-h6">
-                  <v-icon start icon="mdi-star" class="me-1"></v-icon>
-                  {{ totalRecord?.totalDistance }} km
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="4" class="d-flex justify-center">
-              <div>
-                <div class="text-slate-500">總任務積分</div>
-                <div class="text-white font-weight-bold text-h6 d-flex justify-center align-center">
-                  <v-icon icon="mdi-trophy" class="mr-2" color="amber"></v-icon>
-                  {{ formatToThousand(totalPoints) }}
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
 </template>
 
 <script setup lang="ts">

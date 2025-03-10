@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-tabs v-model="currentPage" bg-color="primary" fixed-tabs dark class="mt-6">
+    <v-tabs v-model="currentPage" bg-color="primary" fixed-tabs dark>
       <v-tab v-for="(item, index) in tabItems" :key="index" :value="index">
         {{ item }}
       </v-tab>
