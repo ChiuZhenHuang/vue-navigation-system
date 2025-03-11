@@ -1,5 +1,11 @@
 <template>
-  <v-container>
+  <v-container v-if="!getTotalCar.length">
+    <div class="d-flex align-center justify-center">
+      <v-progress-circular indeterminate size="40" width="2" color="white" />
+    </div>
+  </v-container>
+
+  <v-container v-else>
     <v-btn @click="handleUpdateCarType" :disabled="!selectedCar" class="mr-4">儲存</v-btn>
     <v-btn @click="handleAddCarType" :disabled="!!selectedCar" class="mr-4">新增</v-btn>
     <v-btn @click="cancelAddCarType" v-if="newCarType" class="mr-4">取消</v-btn>
@@ -31,7 +37,7 @@
     </div>
 
     <!-- 現有車款 -->
-    <div v-for="car in carTypeStore.carType" :key="car.carType">
+    <div v-for="car in getTotalCar" :key="car.carType">
       <v-responsive class="mx-auto mt-4 px-2 border-b-md border-black" width="100%">
         <v-row>
           <v-col cols="12" sm="6" class="my-2">
@@ -40,7 +46,9 @@
               label="車款"
               :model-value="car.carType"
               readonly
-              :disabled="!!newCarType"
+              :disabled="
+                !!newCarType || (selectedCar !== null && selectedCar?.carType !== car.carType)
+              "
               variant="outlined"
             ></v-text-field>
           </v-col>
@@ -66,7 +74,7 @@
 
 <script setup lang="ts">
 import { useCarTypeStore } from '@/stores/carTypeStore';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import type { CarTypes } from '@/types/carTypes';
 import { useNotificationStore } from '@/stores/notification';
 
@@ -77,6 +85,7 @@ const newCarType = ref<CarTypes | null>(null); // 新增車款
 const tempCarType = ref('');
 const tempOil = ref('');
 
+const getTotalCar = computed(() => carTypeStore.carType);
 // 改變油耗
 const updateCarOil = (car: CarTypes, newOil: string) => {
   selectedCar.value = { ...car, oil: newOil };
@@ -91,10 +100,10 @@ const handleUpdateCarType = async () => {
     );
     if (result) {
       await carTypeStore.getCarTypeApi();
-      notification.show('更新成功', 'success', 3000);
+      notification.show('儲存成功', 'success', 3000);
       selectedCar.value = null;
     } else {
-      notification.show('更新失敗', 'error', 3000);
+      notification.show('儲存失敗', 'error', 3000);
     }
   }
 };

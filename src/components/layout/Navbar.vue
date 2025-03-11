@@ -87,27 +87,40 @@ import { useNotificationStore } from '@/stores/notification';
 import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useUserRecordStore } from '@/stores/userRecordStore';
-
+import { useUserStore } from '@/stores/userStore';
 const display = useDisplay();
 const isMobile = display.smAndDown;
 const route = useRoute();
 
 const notification = useNotificationStore();
 const userRecordStore = useUserRecordStore();
+
+const userStore = useUserStore();
+
 onMounted(() => {
   const msg = window.history.state?.msg as string;
   if (msg) notification.show(msg, 'success', 3000);
 });
 
 const firstName = computed(() =>
-  userRecordStore.userRecord.name ? String(userRecordStore.userRecord.name)[0] : ''
+  userStore.userName
+    ? String(userStore.userName)[0]
+    : userRecordStore.userRecord.name
+      ? String(userRecordStore.userRecord.name)[0]
+      : ''
 );
 
-const items = computed(() =>
-  userRecordStore.userRecord.name === '管理員'
-    ? [{ title: '車款設置' }, { title: '登出' }]
-    : [{ title: '登出' }]
-);
+const items = computed(() => {
+  if (userStore.userName) {
+    return userStore.userName === '管理員'
+      ? [{ title: '車款設置' }, { title: '登出' }]
+      : [{ title: '登出' }];
+  } else {
+    return userRecordStore.userRecord.name === '管理員'
+      ? [{ title: '車款設置' }, { title: '登出' }]
+      : [{ title: '登出' }];
+  }
+});
 
 // 控制導航抽屜的顯示
 const drawer = ref(false);

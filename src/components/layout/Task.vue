@@ -1,5 +1,11 @@
 <template>
-  <v-container>
+  <v-container v-if="!userRecordData?.records">
+    <div class="d-flex align-center justify-center">
+      <v-progress-circular indeterminate size="40" width="2" color="white" />
+    </div>
+  </v-container>
+
+  <v-container v-else>
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center align-center">
@@ -146,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import {
   calculateOilMoney,
@@ -158,6 +164,8 @@ import {
 import type { TotalRecord, TaskProgress } from '@/types/recordType';
 const userRecordStore = useUserRecordStore();
 
+const userRecordData = computed(() => userRecordStore.userRecord);
+
 const finalPercent = ref(0); // 總進度百分比
 const overachievedCount = ref(0); // 幾個達到目標
 const totalPoints = ref(0); // 總積分
@@ -166,11 +174,9 @@ const percentProgress = ref<TaskProgress | null>(null); // 各別的里程/油�
 
 // 計算里程/油耗/次數
 watch(
-  userRecordStore.userRecord,
+  userRecordData,
   () => {
-    const recordsArr = userRecordStore.userRecord?.records
-      ? userRecordStore.userRecord.records
-      : [];
+    const recordsArr = userRecordData.value?.records ? userRecordData.value.records : [];
 
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 

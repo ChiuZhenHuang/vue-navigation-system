@@ -6,32 +6,38 @@
       </v-tab>
     </v-tabs>
 
-    <v-list>
-      <v-list-item
-        v-for="(item, index) in paginatedData"
-        :key="index"
-        class="border-b-sm border-primary my-4"
-      >
-        <div class="d-flex align-center h-20">
-          <v-list-item-avatar class="w-10 h-10">
-            <v-avatar :color="getAvatarColor(index + 1)" class="white--text font-weight-bold">
-              {{ getDisplayIndex(index + 1) }}
-            </v-avatar>
-          </v-list-item-avatar>
+    <div class="d-flex align-center justify-center my-10" v-if="!userTotalData.length">
+      <v-progress-circular indeterminate size="40" width="2" color="white" />
+    </div>
 
-          <div class="ml-8">
-            <v-list-item-title>
-              {{ item.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ getDescription(item) }}
-            </v-list-item-subtitle>
+    <div v-else>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in paginatedData"
+          :key="index"
+          class="border-b-sm border-primary my-4"
+        >
+          <div class="d-flex align-center h-20">
+            <v-list-item-avatar class="w-10 h-10">
+              <v-avatar :color="getAvatarColor(index + 1)" class="white--text font-weight-bold">
+                {{ getDisplayIndex(index + 1) }}
+              </v-avatar>
+            </v-list-item-avatar>
+
+            <div class="ml-8">
+              <v-list-item-title>
+                {{ item.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ getDescription(item) }}
+              </v-list-item-subtitle>
+            </div>
           </div>
-        </div>
-      </v-list-item>
-    </v-list>
+        </v-list-item>
+      </v-list>
 
-    <v-pagination v-model="navigationPage" :length="totalPages" :total-visible="5"></v-pagination>
+      <v-pagination v-model="navigationPage" :length="totalPages" :total-visible="5"></v-pagination>
+    </div>
   </v-container>
 </template>
 

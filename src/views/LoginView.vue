@@ -74,9 +74,10 @@ import type { userData } from '@/types/userType';
 import { useNotificationStore } from '@/stores/notification';
 import ToastMessage from '@/components/toastMessage.vue';
 import { RouterLink } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 
 const notification = useNotificationStore();
-
+const userStore = useUserStore();
 onMounted(() => {
   const msg = window.history.state?.msg as string;
   if (msg) notification.show(msg, 'success', 3000);
@@ -104,7 +105,9 @@ const handleLogin = async () => {
     console.log('登入:', { email: email.value, password: password.value });
     const result = await loginUser({ email: email.value, password: password.value });
     if (result.success) {
-      const { token, uid } = result as Required<userData>;
+      const { token, uid, userName } = result as Required<userData>;
+
+      userStore.setUserName(userName);
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;

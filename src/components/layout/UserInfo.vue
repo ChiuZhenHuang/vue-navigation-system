@@ -1,5 +1,11 @@
 <template>
-  <v-container>
+  <v-container v-if="!userRecord?.id">
+    <div class="d-flex align-center justify-center">
+      <v-progress-circular indeterminate size="40" width="2" color="white" />
+    </div>
+  </v-container>
+
+  <v-container v-else>
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
