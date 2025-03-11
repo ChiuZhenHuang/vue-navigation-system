@@ -1,11 +1,12 @@
 <template>
   <v-container fluid class="fill-height pa-0">
+    <ToastMessage />
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-card class="elevation-12 rounded-lg">
           <v-toolbar color="primary" dark flat>
             <div class="w-100 d-flex justify-center align-center">
-              <img src="@/assets/images/navigate.png" alt="navigate" width="50" height="50" />
+              <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
             </div>
           </v-toolbar>
           <v-toolbar color="primary" dark flat height="60">
@@ -78,6 +79,7 @@ import { registerUser } from '@/services/firebaseService';
 import router from '@/router';
 import { RouterLink } from 'vue-router';
 import { useNotificationStore } from '@/stores/notification';
+import ToastMessage from '@/components/toastMessage.vue';
 
 const email = ref('');
 const userName = ref('');
@@ -113,11 +115,16 @@ const handleRegister = async () => {
     });
     if (result.success) {
       console.log('註冊成功:', result);
-
       router.push({ name: 'login', state: { msg: '註冊成功！前往登入' } });
     } else {
-      console.log('註冊失敗:', result);
-      notification.show('註冊失敗', 'error', 3000);
+      switch (result.code) {
+        case 'auth/email-already-in-use':
+          notification.show('此Email已註冊過', 'error', 3000);
+          break;
+        default:
+          notification.show('註冊失敗', 'error', 3000);
+          break;
+      }
     }
   } catch (err: unknown) {
     console.log('註冊過程發生錯誤:', err);

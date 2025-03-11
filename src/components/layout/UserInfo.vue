@@ -5,7 +5,7 @@
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
         <v-avatar size="100" class="border-4 border-primary bg-grey">
           <span class="text-h4 font-weight-bold text-white">{{
-            userRecord.name ? String(userRecord.name)[0] : ''
+            userRecord.name && String(userRecord.name)[0]
           }}</span>
         </v-avatar>
       </v-col>
@@ -24,15 +24,13 @@
         <div class="w-100 flex-1">
           <v-divider class="mb-4" color="black" style="border-width: 1px"></v-divider>
 
-          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary" style="width: 160px">
-            導航紀錄
-          </p>
+          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary w-sm-auto">導航紀錄</p>
 
           <div v-if="userRecord.records && userRecord.records.length > 0">
             <v-card
               v-for="(item, index) in userRecord.records"
               :key="index"
-              :class="`my-2 ${index % 2 === 0 ? 'bg-grey-lighten-2' : ''}`"
+              :class="`my-2 ${index % 2 === 0 && 'bg-grey-lighten-2'}`"
             >
               <template v-slot:title>
                 <span class="text-grey-darken-4 font-weight-bold text-h6">{{
@@ -87,3 +85,15 @@ const userRecordStore = useUserRecordStore();
 
 const userRecord = computed(() => userRecordStore.userRecord);
 </script>
+
+<style scoped>
+.v-container :deep(.w-sm-auto) {
+  width: 160px !important;
+}
+
+@media (max-width: 600px) {
+  .v-container :deep(.w-sm-auto) {
+    width: 100% !important;
+  }
+}
+</style>

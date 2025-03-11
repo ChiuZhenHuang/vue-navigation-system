@@ -6,7 +6,7 @@
         <v-card class="elevation-12 rounded-lg">
           <v-toolbar color="primary" dark flat>
             <div class="w-100 d-flex justify-center align-center">
-              <img src="@/assets/images/navigate.png" alt="navigate" width="50" height="50" />
+              <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
             </div>
           </v-toolbar>
           <v-toolbar color="primary" dark flat height="80">
@@ -85,7 +85,6 @@ onMounted(() => {
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
-const errorMessage = ref('');
 const isLoading = ref(false);
 
 const formRules = {
@@ -116,11 +115,9 @@ const handleLogin = async () => {
     } else {
       console.log('登入失敗:', result.error);
       notification.show('登入失敗', 'error', 3000);
-      errorMessage.value = result.error || '登入失敗';
     }
   } catch (err: unknown) {
-    const error = err instanceof Error ? err.message : '發生未知錯誤';
-    errorMessage.value = error;
+    notification.show('登入過程發生錯誤', 'error', 3000);
   } finally {
     isLoading.value = false;
   }

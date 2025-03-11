@@ -19,7 +19,7 @@
             </v-avatar>
           </v-list-item-avatar>
 
-          <div style="margin-left: 56px">
+          <div class="ml-8">
             <v-list-item-title>
               {{ item.name }}
             </v-list-item-title>
@@ -86,7 +86,19 @@ watch(
         totalOil += calculateOilMoney(distance, rec.action.oil);
       });
 
-      const { totalPoints } = calculateTotalPoints(totalDistance, totalCount, totalOil);
+      // 另外計算 "每週積分" 過濾近一星期
+      const weekAge = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const weekRecords = item.records.filter((rec: ActionResponse) => rec.timestamp >= weekAge);
+      const weekDistance = weekRecords.reduce(
+        (sum, rec) => sum + parseFloat(rec.action.distance.replace(/\s公里\s/g, '')),
+        0
+      );
+      const weekCount = weekRecords.length;
+      const weekOil = weekRecords.reduce((sum, rec) => {
+        const distance = parseFloat(rec.action.distance.replace(/\s公里\s/g, '')) || 0;
+        return sum + calculateOilMoney(distance, rec.action.oil);
+      }, 0);
+      const { totalPoints } = calculateTotalPoints(weekDistance, weekCount, weekOil);
 
       return {
         ...item,
@@ -126,25 +138,34 @@ watch(
   { immediate: true }
 );
 
+// 總頁數
 const totalPages = computed(() => Math.ceil(sortedData.value.length / 10));
+
+// 每頁顯示的資料
 const paginatedData = computed(() => {
   const start = (navigationPage.value - 1) * 10;
   return sortedData.value.slice(start, start + 10);
 });
 
-const getAvatarColor = (index: number) => {
-  const actualIndex = (navigationPage.value - 1) * 10 + index;
-  return actualIndex === 1
-    ? 'yellow darken-2'
-    : actualIndex === 2
-      ? 'grey darken-2 text-black'
-      : actualIndex === 3
-        ? 'amber darken-2'
-        : 'grey lighten-3';
-};
-
+// 顯示的排名
 const getDisplayIndex = (index: number) => (navigationPage.value - 1) * 10 + index;
 
+// 排名的顏色
+const getAvatarColor = (index: number) => {
+  const actualIndex = getDisplayIndex(index);
+  switch (actualIndex) {
+    case 1:
+      return 'yellow darken-2';
+    case 2:
+      return 'grey darken-2 text-black';
+    case 3:
+      return 'amber darken-2';
+    default:
+      return 'grey lighten-3';
+  }
+};
+
+// 描述細項
 const getDescription = (item: totalRecords) => {
   switch (tabItems[currentPage.value]) {
     case '總里程排行':

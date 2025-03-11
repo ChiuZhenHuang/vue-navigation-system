@@ -19,18 +19,18 @@
       </v-col>
 
       <v-col cols="12">
-        <v-sheet class="pa-4 mx-auto" color="primary" rounded="lg">
+        <v-sheet class="pa-4 mx-auto" color="blue-darken-2 elevation-16" rounded="lg">
           <div class="d-flex justify-space-between align-center">
             <p class="text-h6 mb-4">{{ taskOptions[0].title }}</p>
             <p>
               {{ formatToThousand(String(totalRecord?.totalDistance)) }} /
-              {{ taskOptions[0].target }} km
+              {{ formatToThousand(taskOptions[0].target) }} km
             </p>
           </div>
           <div class="d-flex align-center">
             <v-progress-linear
               class="flex-grow-1"
-              bg-color="grey-lighten-3"
+              bg-color="grey-lighten-5"
               color="rgba(255, 255, 255, 0.7)"
               height="12"
               :model-value="percentProgress?.distance"
@@ -40,13 +40,13 @@
           </div>
           <v-btn color="white" variant="outlined" class="text-white mt-2">
             <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ taskOptions[0].point }}積分
+            {{ formatToThousand(taskOptions[0].point) }}積分
           </v-btn>
         </v-sheet>
       </v-col>
 
       <v-col cols="12">
-        <v-sheet class="pa-4 mx-auto" color="primary" rounded="lg">
+        <v-sheet class="pa-4 mx-auto" color="blue-darken-2 elevation-16" rounded="lg">
           <div class="d-flex justify-space-between align-center">
             <p class="text-h6 mb-4">{{ taskOptions[1].title }}</p>
             <p>{{ totalRecord?.totalCount }} / {{ taskOptions[1].target }}次</p>
@@ -54,7 +54,7 @@
           <div class="d-flex align-center">
             <v-progress-linear
               class="flex-grow-1"
-              bg-color="grey-lighten-3"
+              bg-color="grey-lighten-5"
               color="rgba(255, 255, 255, 0.7)"
               height="12"
               :model-value="percentProgress?.count"
@@ -64,23 +64,24 @@
           </div>
           <v-btn color="white" variant="outlined" class="text-white mt-2">
             <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ taskOptions[1].point }}積分
+            {{ formatToThousand(taskOptions[1].point) }}積分
           </v-btn>
         </v-sheet>
       </v-col>
 
       <v-col cols="12">
-        <v-sheet class="pa-4 mx-auto" color="primary" rounded="lg">
+        <v-sheet class="pa-4 mx-auto" color="blue-darken-2 elevation-16" rounded="lg">
           <div class="d-flex justify-space-between align-center">
             <p class="text-h6 mb-4">{{ taskOptions[2].title }}</p>
             <p>
-              {{ formatToThousand(String(totalRecord?.totalOil)) }} / {{ taskOptions[2].target }}元
+              {{ formatToThousand(String(totalRecord?.totalOil)) }} /
+              {{ formatToThousand(taskOptions[2].target) }}元
             </p>
           </div>
           <div class="d-flex align-center">
             <v-progress-linear
               class="flex-grow-1"
-              bg-color="grey-lighten-3"
+              bg-color="grey-lighten-5"
               color="rgba(255, 255, 255, 0.7)"
               height="12"
               :model-value="percentProgress?.oil"
@@ -90,14 +91,16 @@
           </div>
           <v-btn color="white" variant="outlined" class="text-white mt-2">
             <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ taskOptions[2].point }}積分
+            {{ formatToThousand(taskOptions[2].point) }}積分
           </v-btn>
         </v-sheet>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card class="py-4 text-center d-flex flex-column bg-primary rounded-lg">
+        <v-card
+          class="py-4 text-center d-flex flex-column bg-blue-darken-4 rounded-lg elevation-16"
+        >
           <v-card-title
             class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
           >
@@ -109,14 +112,17 @@
               <v-col cols="4" class="d-flex justify-center">
                 <div>
                   <div class="text-slate-500">完成任務</div>
-                  <div class="text-white font-weight-bold text-h6">{{ overachievedCount }}/3</div>
+                  <div class="text-white font-weight-bold text-h6">
+                    {{ overachievedCount }} / {{ taskOptions.length }}
+                  </div>
                 </div>
               </v-col>
               <v-col cols="4" class="d-flex justify-center">
                 <div>
                   <div class="text-slate-500">累計里程</div>
                   <div class="text-white font-weight-bold text-h6">
-                    {{ totalRecord?.totalDistance }} km
+                    {{ totalRecord && formatToThousand(totalRecord?.totalDistance) }}
+                    km
                   </div>
                 </div>
               </v-col>

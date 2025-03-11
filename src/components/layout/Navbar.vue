@@ -137,9 +137,8 @@ const navigateTo = async (path: string) => {
   if (path === '/login') handleMenuClick('登出');
 
   if (route.path === path) {
-    // 方法 1：使用 replace
     await router.replace(path);
-    // 或者強制重新加載組件
+    // 強制重新加載組件
     nextTick(() => {
       // 觸發組件重新渲染
       router.go(0);
@@ -154,17 +153,14 @@ const handleMenuClick = (title: string) => {
     document.cookie = 'token=; max-age=0; path=/;';
     document.cookie = 'uid=; max-age=0; path=/;';
     router.replace({ name: 'login', state: { msg: '登出成功！' } });
-    console.log('跳轉到登出頁面');
   } else if (title === '車款設置') {
-    console.log('跳轉到車款設置');
     router.push('/layout/car-setting');
-    // 跳轉到車款設置頁面
   }
 };
 </script>
 
 <style scoped>
 .v-application {
-  height: 64px; /* 讓頁面最小高度為螢幕高度 */
+  height: 64px;
 }
 </style>
