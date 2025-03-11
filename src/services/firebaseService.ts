@@ -3,7 +3,7 @@ import { ref, set, get, push, update } from 'firebase/database';
 import { auth, db } from './firebaseConfig';
 import type { User } from '@/types/firebaseType';
 import type { userData } from '@/types/userType';
-import type { ActionResponse, TotalUserDataRecord } from '@/types/recordType';
+import type { ActionResponse, TotalUserDataRecord, Action } from '@/types/recordType';
 
 // 註冊用戶
 export const registerUser = async ({
@@ -104,7 +104,7 @@ export const saveUserRecord = async ({
   timestamp,
 }: {
   userId: string;
-  action: string;
+  action: Action;
   timestamp: number;
 }) => {
   try {

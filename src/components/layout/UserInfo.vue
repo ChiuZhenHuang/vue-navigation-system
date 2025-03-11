@@ -9,8 +9,8 @@
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
-        <v-avatar size="100" class="border-4 border-primary bg-grey">
-          <span class="text-h4 font-weight-bold text-white">{{
+        <v-avatar size="100" class="border-md bg-grey">
+          <span class="text-h3 font-weight-bold text-white">{{
             userRecord.name && String(userRecord.name)[0]
           }}</span>
         </v-avatar>
@@ -66,11 +66,11 @@
             </v-card>
           </div>
 
-          <div v-else class="d-flex flex-column align-center justify-center">
-            <div>您尚未有導航紀錄！</div>
+          <div v-else class="d-flex flex-column align-center justify-center mt-6">
+            <div class="my-6">您尚未有導航紀錄！</div>
             <v-btn
               class="mt-2 w-100 w-sm-auto"
-              color="primary-lighten-4"
+              color="gery-lighten-4"
               @click="$router.push('/layout/home')"
             >
               開始導航

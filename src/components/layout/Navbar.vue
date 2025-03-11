@@ -10,37 +10,21 @@
           <template v-slot:activator="{ props }">
             <div class="x-4 d-flex justify-end align-center">
               <v-toolbar-title class="mx-4 d-flex justify-end" v-if="!isMobile">
-                <v-btn
-                  color="white"
-                  :variant="isActiveVariant('/layout/home')"
-                  @click="navigateTo('/layout/home')"
+                <template
+                  v-for="item in menuItems.filter(item => item.title !== '登出')"
+                  :key="item.title"
                 >
-                  導航
-                </v-btn>
-                <v-btn
-                  color="white"
-                  :variant="isActiveVariant('/layout/task')"
-                  @click="navigateTo('/layout/task')"
-                >
-                  每週任務
-                </v-btn>
-                <v-btn
-                  color="white"
-                  :variant="isActiveVariant('/layout/rank')"
-                  @click="navigateTo('/layout/rank')"
-                >
-                  排行榜
-                </v-btn>
-                <v-btn
-                  color="white"
-                  :variant="isActiveVariant('/layout/user-info')"
-                  @click="navigateTo('/layout/user-info')"
-                >
-                  個人資訊
-                </v-btn>
+                  <v-btn
+                    color="white"
+                    :variant="isActiveVariant(item.route)"
+                    @click="navigateTo(item.route)"
+                  >
+                    {{ item.title }}
+                  </v-btn>
+                </template>
               </v-toolbar-title>
 
-              <v-avatar color="info border-md border-white" size="large" v-bind="props">
+              <v-avatar color="info" class="border-md font-weight-bold" size="large" v-bind="props">
                 {{ firstName }}
               </v-avatar>
             </div>
@@ -88,13 +72,13 @@ import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import { useUserStore } from '@/stores/userStore';
+
 const display = useDisplay();
 const isMobile = display.smAndDown;
 const route = useRoute();
 
 const notification = useNotificationStore();
 const userRecordStore = useUserRecordStore();
-
 const userStore = useUserStore();
 
 onMounted(() => {

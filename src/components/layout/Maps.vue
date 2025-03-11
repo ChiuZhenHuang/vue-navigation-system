@@ -73,7 +73,7 @@
   <ToastMessage />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, onUnmounted, computed } from 'vue';
 import { Loader } from '@googlemaps/js-api-loader';
 import { getCarTypes } from '@/services/firebaseService';
@@ -84,7 +84,8 @@ import { useNotificationStore } from '@/stores/notification';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import { useUserStore } from '@/stores/userStore';
 import ToastMessage from '../toastMessage.vue';
-// import { CarTypes } from '@/types/carTypes';
+import type { CarTypes } from '@/types/carTypes';
+import type { Action } from '@/types/recordType';
 
 const props = defineProps({
   userId: {
@@ -98,7 +99,9 @@ const props = defineProps({
   },
 });
 
-const totalCarTypes = ref([]);
+const emit = defineEmits(['loadingStatus']);
+
+const totalCarTypes = ref<CarTypes[]>([]);
 
 const notification = useNotificationStore();
 const userRecordStore = useUserRecordStore();
@@ -118,21 +121,25 @@ onMounted(async () => {
 
 // 定義狀態
 const isLoaded = ref(false);
-const currentPosition = ref(null); // 當前位置
-const selectedPlace = ref(null); // 選擇的目的地
-const map = ref(null); // 地圖實例
+const currentPosition = ref<{ lat: number; lng: number } | null>(null); // 當前位置
+const selectedPlace = ref<{ lat: number; lng: number } | null>(null); // 選擇的目的地
+const map = ref<google.maps.Map | null>(null); // 地圖實例
 const isLocating = ref(false); // 是否正在定位
 const searchInput = ref(''); // 搜尋輸入
-const routeInfo = ref(null); // 路線資訊
-const directions = ref(null); // 路線
+const routeInfo = ref<{ distance: string; duration: string } | null>(null); // 路線資訊
+const directions = ref<google.maps.DirectionsResult | null>(null); // 路線
 const isNavigating = ref(false); // 是否正在導航
 
 // DOM refs
-const mapContainer = ref(null);
-const searchInputRef = ref(null);
-const autoComplete = ref(null);
-const directionsService = ref(null);
-const directionsRenderer = ref(null);
+const searchInputRef = ref<any>(null);
+const autoComplete = ref<google.maps.places.Autocomplete | null>(null);
+const directionsService = ref<google.maps.DirectionsService | null>(null);
+const directionsRenderer = ref<google.maps.DirectionsRenderer | null>(null);
+const mapContainer = ref<HTMLElement | null>(null);
+
+watch(isLoaded, newValue => {
+  if (newValue) emit('loadingStatus', true);
+});
 
 // Google Maps API 加載器
 const loader = new Loader({
@@ -158,7 +165,7 @@ onMounted(async () => {
 });
 
 // 初始化地圖
-const initMap = google => {
+const initMap = (google: any) => {
   // 建立地圖
   const defaultCenter = { lat: 25.0478, lng: 121.5319 };
   map.value = new google.maps.Map(mapContainer.value, {
@@ -179,7 +186,8 @@ const initMap = google => {
       strokeWeight: 5,
     },
   });
-  directionsRenderer.value.setMap(map.value);
+
+  directionsRenderer.value?.setMap(map.value);
 
   // 初始化地址自動完成
   setupAutocomplete();
@@ -201,6 +209,7 @@ const setupAutocomplete = () => {
   });
 
   autoComplete.value.addListener('place_changed', () => {
+    if (!autoComplete.value) return;
     const place = autoComplete.value.getPlace();
     if (place?.geometry?.location) {
       const pos = {
@@ -208,8 +217,10 @@ const setupAutocomplete = () => {
         lng: place.geometry.location.lng(),
       };
       selectedPlace.value = pos;
-      map.value.panTo(pos);
-      map.value.setZoom(16);
+      if (map.value) {
+        map.value.panTo(pos);
+        map.value.setZoom(16);
+      }
       searchInput.value = place.formatted_address || place.name || '';
 
       // 如果有當前位置，計算路線
@@ -226,7 +237,10 @@ watch([map, currentPosition], () => {
 });
 
 // 計算路線
-const calculateRoute = (origin, destination) => {
+const calculateRoute = (
+  origin: { lat: number; lng: number },
+  destination: { lat: number; lng: number }
+) => {
   if (!directionsService.value) return;
 
   directionsService.value.route(
@@ -238,7 +252,7 @@ const calculateRoute = (origin, destination) => {
     (result, status) => {
       if (status === google.maps.DirectionsStatus.OK && result) {
         directions.value = result;
-        directionsRenderer.value.setDirections(result);
+        directionsRenderer.value!.setDirections(result); // 使用非空斷言
 
         const route = result.routes[0].legs[0];
         routeInfo.value = {
@@ -263,8 +277,10 @@ const getCurrentLocation = () => {
           lng: position.coords.longitude,
         };
         currentPosition.value = pos;
-        map.value.panTo(pos);
-        map.value.setZoom(15);
+        if (map.value) {
+          map.value.panTo(pos);
+          map.value.setZoom(16);
+        }
         isLocating.value = false;
 
         // 當前位置標記
@@ -293,9 +309,13 @@ const getCurrentLocation = () => {
   }
 };
 
+interface MarkerData {
+  marker: google.maps.Marker;
+  type: string;
+}
 // 添加標記
-const markers = ref([]);
-const addMarker = (position, type) => {
+const markers = ref<MarkerData[]>([]);
+const addMarker = (position: { lat: number; lng: number }, type: string) => {
   // 清除相同類型的標記
   markers.value = markers.value.filter(marker => marker.type !== type);
 
@@ -340,7 +360,7 @@ const startNavigation = async () => {
           time: String(routeInfo.value?.duration),
           carType: selectedCar.value.value ?? '未知車款',
           oil: selectedCar.value.oil ?? '未知',
-        };
+        } as Action;
 
         const result = await saveUserRecord({
           userId: props.userId,

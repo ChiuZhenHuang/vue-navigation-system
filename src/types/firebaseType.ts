@@ -1,10 +1,4 @@
-export interface Action {
-  distance: string; // 距離
-  place: string; // 地點
-  carType: string; // 車種
-  oil: string; // 油耗
-  time: string; // 時間
-}
+import type { Action } from './recordType';
 
 export interface UserRecord {
   action: Action;

@@ -4,7 +4,7 @@
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-card class="elevation-12 rounded-lg">
-          <v-toolbar color="primary" dark flat>
+          <v-toolbar color="primary" dark flat height="80">
             <div class="w-100 d-flex justify-center align-center">
               <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
             </div>

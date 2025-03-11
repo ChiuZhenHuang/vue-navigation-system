@@ -9,8 +9,13 @@
     ></v-select>
   </div>
 
-  <Maps v-if="userId" :user-id="userId" :select-car-type="selectedCar" />
-  <p v-else>導入地圖中...</p>
+  <Maps
+    v-show="isLoaded"
+    :user-id="userId"
+    :select-car-type="selectedCar"
+    @loading-status="handleLoadingStatus"
+  />
+  <p v-show="!isLoaded">載入地圖中...</p>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +27,7 @@ import { useCarTypeStore } from '@/stores/carTypeStore';
 const carTypeStore = useCarTypeStore();
 const userId = ref<string | null>(null);
 const selectedCar = ref<string | null>(null);
+const isLoaded = ref(false);
 
 const carItems = computed(() => carTypeStore.carType.map(carType => carType.carType));
 
@@ -44,5 +50,9 @@ onMounted(() => {
 const handleSelection = (value: string) => {
   console.log('Selected car:', value);
   selectedCar.value = value;
+};
+
+const handleLoadingStatus = (status: boolean) => {
+  isLoaded.value = status;
 };
 </script>

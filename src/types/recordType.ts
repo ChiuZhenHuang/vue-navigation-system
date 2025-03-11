@@ -36,8 +36,6 @@ export interface TaskOptions {
   point: string;
 }
 
-// ----------------
-
 export interface TotalUserDataRecord {
   email: string;
   id: string;
