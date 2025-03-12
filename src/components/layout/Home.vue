@@ -1,5 +1,8 @@
 <template>
-  <div class="mx-6 mt-6">
+  <div class="mx-4">
+    <div class="mb-4">
+      歡迎 <span class="user-name">{{ userName }}</span> 回來！
+    </div>
     <v-select
       label="選擇您的車款"
       :items="carItems"
@@ -23,13 +26,16 @@ import Maps from './Maps.vue';
 import { ref, onMounted, computed, watch } from 'vue';
 import { getCookie } from '@/utils/methods';
 import { useCarTypeStore } from '@/stores/carTypeStore';
+import { useUserRecordStore } from '@/stores/userRecordStore';
 
+const userRecordStore = useUserRecordStore();
 const carTypeStore = useCarTypeStore();
 const userId = ref<string>('');
 const selectedCar = ref<string>('');
 const isLoaded = ref(false);
 
 const carItems = computed(() => carTypeStore.carType.map(carType => carType.carType));
+const userName = computed(() => userRecordStore.userRecord.name);
 
 watch(
   () => carTypeStore.carType,
@@ -56,3 +62,11 @@ const handleLoadingStatus = (status: boolean) => {
   isLoaded.value = status;
 };
 </script>
+
+<style scoped>
+.user-name {
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: underline;
+}
+</style>

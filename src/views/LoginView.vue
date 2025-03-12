@@ -2,7 +2,7 @@
   <v-container fluid class="fill-height pa-0">
     <ToastMessage />
     <v-row align="center" justify="center" class="fill-height mx-4">
-      <v-col cols="12" sm="8" md="5" lg="4">
+      <v-col cols="12" sm="8" md="5" lg="4" style="max-width: 450px">
         <v-card class="elevation-12 rounded-xl">
           <v-toolbar dark flat height="80" class="content-card">
             <div class="w-100 d-flex justify-center align-center">
