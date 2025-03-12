@@ -2,7 +2,7 @@
   <ToastMessage />
   <v-app>
     <!-- 頂部應用欄 -->
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app dark style="background-color: rgb(255, 247, 237)">
       <v-app-bar-nav-icon @click="drawer = !drawer" v-if="isMobile"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-end mr-2">
         <!-- 使用 v-menu 讓頭像顯示下拉選單 -->
@@ -15,16 +15,17 @@
                   :key="item.title"
                 >
                   <v-btn
-                    color="white"
+                    color="black"
                     :variant="isActiveVariant(item.route)"
                     @click="navigateTo(item.route)"
+                    class="text-black font-weight-bold text-subtitle-2"
                   >
                     {{ item.title }}
                   </v-btn>
                 </template>
               </v-toolbar-title>
 
-              <v-avatar color="info" class="border-md font-weight-bold" size="large" v-bind="props">
+              <v-avatar class="font-weight-bold avatar" size="50" v-bind="props">
                 {{ firstName }}
               </v-avatar>
             </div>
@@ -44,13 +45,13 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app temporary>
+    <v-navigation-drawer v-model="drawer" app temporary class="sider-bar">
       <v-list density="compact">
         <v-list-item
           v-for="(item, i) in menuItems"
           :key="i"
           :value="item"
-          :color="isActive(item.route) ? 'rgba(0, 0, 0, 0.5)' : ''"
+          :color="isActive(item.route) ? 'black' : ''"
           @click="navigateTo(item.route)"
         >
           <template v-slot:prepend>
@@ -159,5 +160,15 @@ const handleMenuClick = (title: string) => {
 <style scoped>
 .v-application {
   height: 64px;
+}
+
+.avatar {
+  background-color: #afaaa0;
+  border: 3px solid white;
+  color: white;
+}
+
+.sider-bar {
+  background-color: rgb(255, 247, 237);
 }
 </style>

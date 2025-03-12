@@ -9,7 +9,7 @@
     <v-row justify="center" align="center">
       <!-- Avatar 部分 -->
       <v-col cols="12" sm="8" class="d-flex justify-center align-center mt-2">
-        <v-avatar size="100" class="border-md bg-grey">
+        <v-avatar size="100" class="border-md avatar">
           <span class="text-h3 font-weight-bold text-white">{{
             userRecord.name && String(userRecord.name)[0]
           }}</span>
@@ -30,16 +30,20 @@
         <div class="w-100 flex-1">
           <v-divider class="mb-4" color="black" style="border-width: 1px"></v-divider>
 
-          <p class="my-2 py-1 text-center rounded-lg text-white bg-primary w-sm-auto">導航紀錄</p>
+          <p
+            class="my-2 py-1 text-center rounded-lg text-white bg-orange-darken-2 font-weight-bold w-sm-auto"
+          >
+            導航紀錄
+          </p>
 
           <div v-if="userRecord.records && userRecord.records.length > 0">
             <v-card
               v-for="(item, index) in userRecord.records"
               :key="index"
-              :class="`my-2 ${index % 2 === 0 && 'bg-grey-lighten-2'}`"
+              :class="`my-2 ${index % 2 === 0 ? 'bg-orange-lighten-4' : 'bg-light-orange'}`"
             >
               <template v-slot:title>
-                <span class="text-grey-darken-4 font-weight-bold text-h6">{{
+                <span class="text-black font-weight-bold text-subtitle-1">{{
                   item.action.place
                 }}</span>
               </template>
@@ -70,7 +74,7 @@
             <div class="my-6">您尚未有導航紀錄！</div>
             <v-btn
               class="mt-2 w-100 w-sm-auto"
-              color="gery-lighten-4"
+              color="orange-lighten-4"
               @click="$router.push('/layout/home')"
             >
               開始導航
@@ -101,5 +105,13 @@ const userRecord = computed(() => userRecordStore.userRecord);
   .v-container :deep(.w-sm-auto) {
     width: 100% !important;
   }
+}
+
+.avatar {
+  background-color: #afaaa0;
+}
+
+.bg-light-orange {
+  background-color: rgb(255, 247, 237);
 }
 </style>

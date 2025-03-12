@@ -15,7 +15,7 @@
     :select-car-type="selectedCar"
     @loading-status="handleLoadingStatus"
   />
-  <p v-show="!isLoaded">載入地圖中...</p>
+  <p v-if="!isLoaded">載入地圖中...</p>
 </template>
 
 <script setup lang="ts">
@@ -25,8 +25,8 @@ import { getCookie } from '@/utils/methods';
 import { useCarTypeStore } from '@/stores/carTypeStore';
 
 const carTypeStore = useCarTypeStore();
-const userId = ref<string | null>(null);
-const selectedCar = ref<string | null>(null);
+const userId = ref<string>('');
+const selectedCar = ref<string>('');
 const isLoaded = ref(false);
 
 const carItems = computed(() => carTypeStore.carType.map(carType => carType.carType));

@@ -32,7 +32,7 @@ export const taskOptions: TaskOptions[] = [
   { title: '週累積里程', target: '1000', point: '1000' },
   { title: '週導航次數', target: '5', point: '500' },
   { title: '週油費總計', target: '2000', point: '700' },
-];
+] as const;
 
 // 計算各項數據
 export const calculateTotalPoints = (

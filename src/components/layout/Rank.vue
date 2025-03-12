@@ -1,7 +1,12 @@
 <template>
   <v-container>
-    <v-tabs v-model="currentPage" bg-color="primary" fixed-tabs dark>
-      <v-tab v-for="(item, index) in tabItems" :key="index" :value="index">
+    <v-tabs v-model="currentPage" bg-color="orange-lighten-4" fixed-tabs dark>
+      <v-tab
+        v-for="(item, index) in tabItems"
+        :key="index"
+        :value="index"
+        class="text-black font-weight-bold"
+      >
         {{ item }}
       </v-tab>
     </v-tabs>
@@ -12,11 +17,7 @@
 
     <div v-else>
       <v-list>
-        <v-list-item
-          v-for="(item, index) in paginatedData"
-          :key="index"
-          class="border-b-sm border-primary my-4"
-        >
+        <v-list-item v-for="(item, index) in paginatedData" :key="index" class="border-b-sm my-4">
           <div class="d-flex align-center h-20">
             <v-list-item-avatar class="w-10 h-10">
               <v-avatar :color="getAvatarColor(index + 1)" class="white--text font-weight-bold">
@@ -25,7 +26,7 @@
             </v-list-item-avatar>
 
             <div class="ml-8">
-              <v-list-item-title>
+              <v-list-item-title class="font-weight-medium">
                 {{ item.name }}
               </v-list-item-title>
               <v-list-item-subtitle>

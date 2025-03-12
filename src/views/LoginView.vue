@@ -2,17 +2,17 @@
   <v-container fluid class="fill-height pa-0">
     <ToastMessage />
     <v-row align="center" justify="center" class="fill-height mx-4">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="elevation-12 rounded-lg">
-          <v-toolbar color="primary" dark flat height="80">
+      <v-col cols="12" sm="8" md="5" lg="4">
+        <v-card class="elevation-12 rounded-xl">
+          <v-toolbar dark flat height="80" class="content-card">
             <div class="w-100 d-flex justify-center align-center">
               <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
             </div>
           </v-toolbar>
-          <v-toolbar color="primary" dark flat height="80">
+          <v-toolbar dark flat height="80" class="content-card">
             <div class="d-flex flex-column align-center justify-center text-center w-100">
-              <div class="text-h5 mb-2 font-weight-bold">歡迎使用導航紀錄系統</div>
-              <div class="text-subtitle-2 opacity-60">請登入開始您的旅程</div>
+              <div class="text-h5 mb-2 font-weight-bold text-orange">歡迎使用導航紀錄系統</div>
+              <div class="text-subtitle-2 text-slate">請登入開始您的旅程</div>
             </div>
           </v-toolbar>
           <v-card-text>
@@ -39,7 +39,7 @@
                 class="mb-4"
               ></v-text-field>
 
-              <v-btn color="primary" block type="submit" class="mb-4" :disabled="isLoading">
+              <v-btn block type="submit" class="mb-4 login-btn" :disabled="isLoading">
                 <div class="d-flex align-center justify-center">
                   <v-progress-circular
                     v-if="isLoading"
@@ -129,7 +129,25 @@ const handleLogin = async () => {
 
 <style scoped>
 .v-container {
-  background-color: #f5f5f5;
+  background-color: rgb(255, 247, 237);
   min-height: 100vh;
+}
+
+.login-btn {
+  background-color: #ff9800;
+  color: white;
+  font-weight: bold;
+}
+
+.content-card {
+  background-color: rgb(248, 250, 252);
+}
+
+.text-orange {
+  color: rgb(234, 88, 12);
+}
+
+.text-slate {
+  color: rgb(148, 163, 184);
 }
 </style>

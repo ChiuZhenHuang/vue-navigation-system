@@ -7,7 +7,7 @@
           :loading="isLocating"
           :disabled="isLocating"
           @click="getCurrentLocation"
-          color="primary"
+          class="orange-btn"
           prepend-icon="mdi-map-marker"
         >
           {{ isLocating ? '定位中...' : '定位我的位置' }}
@@ -50,7 +50,7 @@
               block
               @click="startNavigation"
               :disabled="!selectedPlace || !currentPosition"
-              color="primary"
+              class="orange-btn"
               prepend-icon="mdi-navigation"
             >
               {{ isNavigating ? '導航中' : '開始導航' }}
@@ -62,9 +62,7 @@
       <v-col cols="12" md="4" v-else>
         <v-card class="pa-4">
           <v-card-actions>
-            <v-btn block disabled color="primary" prepend-icon="mdi-navigation">
-              請選擇導航地點及定位
-            </v-btn>
+            <v-btn block disabled prepend-icon="mdi-navigation"> 請選擇導航地點及定位 </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -95,7 +93,6 @@ const props = defineProps({
   selectCarType: {
     type: String,
     required: false,
-    default: '',
   },
 });
 
@@ -138,6 +135,7 @@ const directionsRenderer = ref<google.maps.DirectionsRenderer | null>(null);
 const mapContainer = ref<HTMLElement | null>(null);
 
 watch(isLoaded, newValue => {
+  console.log('isLoaded', newValue);
   if (newValue) emit('loadingStatus', true);
 });
 
@@ -456,5 +454,10 @@ onUnmounted(() => {
 .pac-item-selected,
 .pac-item-selected:hover {
   background-color: #e3f2fd;
+}
+
+.orange-btn {
+  background-color: #f1ab40;
+  color: white;
 }
 </style>

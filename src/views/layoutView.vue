@@ -7,7 +7,7 @@
     v-show="showScrollTop"
     @click="scrollToTop"
     icon="mdi-chevron-up"
-    color="grey-lighten-2"
+    color="orange-darken-2"
     :style="{ position: 'fixed', bottom: '16px', right: '16px' }"
     class="mb-4 me-4"
   ></v-btn>

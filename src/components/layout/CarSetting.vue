@@ -6,9 +6,19 @@
   </v-container>
 
   <v-container v-else>
-    <v-btn @click="handleUpdateCarType" :disabled="!selectedCar" class="mr-4">儲存</v-btn>
-    <v-btn @click="handleAddCarType" :disabled="!!selectedCar" class="mr-4">新增</v-btn>
-    <v-btn @click="cancelAddCarType" v-if="newCarType" class="mr-4">取消</v-btn>
+    <v-btn
+      @click="handleUpdateCarType"
+      :disabled="!selectedCar"
+      color="orange-lighten-4"
+      class="mr-4"
+      >儲存</v-btn
+    >
+    <v-btn @click="handleAddCarType" :disabled="!!selectedCar" color="orange-lighten-4" class="mr-4"
+      >新增</v-btn
+    >
+    <v-btn @click="cancelAddCarType" v-if="newCarType" color="orange-darken-2" class="mr-4"
+      >取消</v-btn
+    >
 
     <!-- 新增之車款 -->
     <div v-if="newCarType" :key="newCarType.carType">
