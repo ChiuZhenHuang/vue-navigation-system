@@ -443,7 +443,7 @@ onUnmounted(() => {
 
 .pac-matched {
   font-weight: bold;
-  color: #1867c0;
+  color: #f1ab40;
 }
 
 .pac-icon {
@@ -459,5 +459,8 @@ onUnmounted(() => {
 .orange-btn {
   background-color: #f1ab40;
   color: white;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 </style>

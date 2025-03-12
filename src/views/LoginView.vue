@@ -39,7 +39,11 @@
                 class="mb-4"
               ></v-text-field>
 
-              <v-btn block type="submit" class="mb-4 login-btn" :disabled="isLoading">
+              <v-btn
+                block
+                type="submit"
+                :class="['mb-4', 'login-btn', { 'opacity-80': isLoading }]"
+              >
                 <div class="d-flex align-center justify-center">
                   <v-progress-circular
                     v-if="isLoading"
@@ -137,6 +141,9 @@ const handleLogin = async () => {
   background-color: #ff9800;
   color: white;
   font-weight: bold;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .content-card {

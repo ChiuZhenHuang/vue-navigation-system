@@ -48,7 +48,11 @@
                 class="mb-4"
               ></v-text-field>
 
-              <v-btn block type="submit" class="mb-4 register-btn" :disabled="isLoading">
+              <v-btn
+                block
+                type="submit"
+                :class="['mb-4', 'register-btn', { 'opacity-80': isLoading }]"
+              >
                 <div class="d-flex align-center justify-center">
                   <v-progress-circular
                     v-if="isLoading"
@@ -145,6 +149,9 @@ const handleRegister = async () => {
   background-color: #ff9800;
   color: white;
   font-weight: bold;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .content-card {
