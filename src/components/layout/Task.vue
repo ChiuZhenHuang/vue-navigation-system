@@ -59,12 +59,13 @@
         <Card
           class="py-4 text-center d-flex flex-column bg-orange-lighten-4 rounded-lg elevation-10"
         >
-          <template
-            #title
-            class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
-          >
-            <v-icon icon="mdi-crown" class="mr-2" color="amber"></v-icon>
-            本週成就
+          <template #title>
+            <div
+              class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
+            >
+              <v-icon icon="mdi-crown" class="mr-2" color="amber"></v-icon>
+              本週成就
+            </div>
           </template>
 
           <template #content>

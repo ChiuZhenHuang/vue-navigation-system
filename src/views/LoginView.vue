@@ -3,14 +3,14 @@
     <ToastMessage />
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="5" lg="4" style="max-width: 450px">
-        <Card class="elevation-12 rounded-xl pb-4">
+        <Card class="elevation-12 rounded-xl pb-4 bg-grey-lighten-5">
           <template #content>
-            <v-toolbar dark flat height="80" class="content-card">
+            <v-toolbar dark flat height="80" class="bg-grey-lighten-5">
               <div class="w-100 d-flex justify-center align-center">
                 <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
               </div>
             </v-toolbar>
-            <v-toolbar dark flat height="80" class="content-card">
+            <v-toolbar dark flat height="80" class="bg-grey-lighten-5">
               <div class="d-flex flex-column align-center justify-center text-center w-100">
                 <div class="text-h5 mb-2 font-weight-bold text-orange">歡迎使用導航紀錄系統</div>
                 <div class="text-subtitle-2 text-slate">請登入開始您的旅程</div>
@@ -148,10 +148,6 @@ const handleLogin = async () => {
   &:hover {
     opacity: 0.8;
   }
-}
-
-.content-card {
-  background-color: rgb(248, 250, 252);
 }
 
 .text-orange {
