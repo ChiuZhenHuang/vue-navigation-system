@@ -78,7 +78,7 @@ import { getCarTypes } from '@/services/firebaseService';
 import { saveUserRecord } from '@/services/firebaseService';
 import { getUserRecords } from '@/services/firebaseService';
 import { getUsersData } from '@/services/firebaseService';
-import { useNotificationStore } from '@/stores/notification';
+import { useMessageStore } from '@/stores/messageStore';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import { useUserStore } from '@/stores/userStore';
 import ToastMessage from '../toastMessage.vue';
@@ -100,7 +100,7 @@ const emit = defineEmits(['loadingStatus']);
 
 const totalCarTypes = ref<CarTypes[]>([]);
 
-const notification = useNotificationStore();
+const messageStore = useMessageStore();
 const userRecordStore = useUserRecordStore();
 const userStore = useUserStore();
 const selectedCar = computed(() => {
@@ -158,7 +158,7 @@ onMounted(async () => {
     }, 0);
   } catch (error) {
     console.error('Failed to load Google Maps:', error);
-    notification.show('無法載入 Google 地圖，請檢查您的網路連接', 'error', 3000);
+    messageStore.show('無法載入 Google 地圖，請檢查您的網路連接', 'error', 3000);
   }
 });
 
@@ -258,7 +258,7 @@ const calculateRoute = (
           duration: route.duration?.text || '',
         };
       } else {
-        notification.show('無法計算路線，請嘗試其他目的地', 'error', 3000);
+        messageStore.show('無法計算路線，請嘗試其他目的地', 'error', 3000);
       }
     }
   );
@@ -293,7 +293,7 @@ const getCurrentLocation = () => {
       },
       error => {
         isLocating.value = false;
-        notification.show(`無法取得您的位置: ${error.message}`, 'error', 3000);
+        messageStore.show(`無法取得您的位置: ${error.message}`, 'error', 3000);
       },
       {
         enableHighAccuracy: true,
@@ -303,7 +303,7 @@ const getCurrentLocation = () => {
     );
   } else {
     isLocating.value = false;
-    notification.show('瀏覽器不支援位置服務', 'error', 3000);
+    messageStore.show('瀏覽器不支援位置服務', 'error', 3000);
   }
 };
 
@@ -341,7 +341,7 @@ const addMarker = (position: { lat: number; lng: number }, type: string) => {
 const startNavigation = async () => {
   if (!selectedCar.value) {
     console.log('沒選車款');
-    notification.show('請選擇車種', 'error', 3000);
+    messageStore.show('請選擇車種', 'error', 3000);
     return;
   }
 
@@ -368,15 +368,15 @@ const startNavigation = async () => {
         if (result.success) {
           userRecordStore.getUserRecordApi(props.userId); // 再取一次使用者資料
           userStore.getUserDataApi(); // 再取一次所有資料
-          notification.show('已儲存路線資料', 'success', 3000);
+          messageStore.show('已儲存路線資料', 'success', 3000);
         } else {
-          notification.show('儲存路線資料失敗', 'error', 3000);
+          messageStore.show('儲存路線資料失敗', 'error', 3000);
         }
       } catch (error) {
         console.error('Error saving navigation data:', error);
       }
     } else {
-      notification.show('請選擇車種', 'error', 3000);
+      messageStore.show('請選擇車種', 'error', 3000);
     }
   }
 };

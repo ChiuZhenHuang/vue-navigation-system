@@ -57,11 +57,17 @@
                 </div>
               </v-btn>
 
-              <div class="text-center py-2">
-                <router-link to="/register" class="text-decoration-none">
-                  還不是會員?前往註冊
-                </router-link>
-              </div>
+              <router-link to="/register" class="text-decoration-none my-2">
+                <v-btn
+                  block
+                  type="button"
+                  color="white"
+                  variant="text"
+                  class="border-sm border-black text-black"
+                >
+                  <span class="text-black">還不是會員?前往註冊</span>
+                </v-btn>
+              </router-link>
             </v-form>
           </v-card-text>
         </v-card>
@@ -75,16 +81,16 @@ import { ref, onMounted } from 'vue';
 import { loginUser } from '@/services/firebaseService';
 import router from '@/router';
 import type { userData } from '@/types/userType';
-import { useNotificationStore } from '@/stores/notification';
+import { useMessageStore } from '@/stores/messageStore';
 import ToastMessage from '@/components/toastMessage.vue';
 import { RouterLink } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 
-const notification = useNotificationStore();
+const messageStore = useMessageStore();
 const userStore = useUserStore();
 onMounted(() => {
   const msg = window.history.state?.msg as string;
-  if (msg) notification.show(msg, 'success', 3000);
+  if (msg) messageStore.show(msg, 'success', 3000);
 });
 
 const email = ref('');
@@ -121,10 +127,10 @@ const handleLogin = async () => {
       console.log('登入成功:', result);
     } else {
       console.log('登入失敗:', result.error);
-      notification.show('登入失敗', 'error', 3000);
+      messageStore.show('登入失敗', 'error', 3000);
     }
   } catch (err: unknown) {
-    notification.show('登入過程發生錯誤', 'error', 3000);
+    messageStore.show('登入過程發生錯誤', 'error', 3000);
   } finally {
     isLoading.value = false;
   }

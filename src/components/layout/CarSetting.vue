@@ -86,10 +86,10 @@
 import { useCarTypeStore } from '@/stores/carTypeStore';
 import { onMounted, ref, computed } from 'vue';
 import type { CarTypes } from '@/types/carTypes';
-import { useNotificationStore } from '@/stores/notification';
+import { useMessageStore } from '@/stores/messageStore';
 
 const carTypeStore = useCarTypeStore();
-const notification = useNotificationStore();
+const messageStore = useMessageStore();
 const selectedCar = ref<CarTypes | null>(null); // 選擇欲更改油耗之車款
 const newCarType = ref<CarTypes | null>(null); // 新增車款
 const tempCarType = ref('');
@@ -110,10 +110,10 @@ const handleUpdateCarType = async () => {
     );
     if (result) {
       await carTypeStore.getCarTypeApi();
-      notification.show('儲存成功', 'success', 3000);
+      messageStore.show('儲存成功', 'success', 3000);
       selectedCar.value = null;
     } else {
-      notification.show('儲存失敗', 'error', 3000);
+      messageStore.show('儲存失敗', 'error', 3000);
     }
   }
 };
@@ -121,7 +121,7 @@ const handleUpdateCarType = async () => {
 // 更新新增車款
 const handleAddCarType = async () => {
   if (newCarType.value && (!tempCarType.value || !tempOil.value)) {
-    notification.show('請完整輸入車款資訊', 'error', 3000);
+    messageStore.show('請完整輸入車款資訊', 'error', 3000);
     return;
   }
   // 如果沒有車款，就新增車款讓使用者填寫
@@ -141,12 +141,12 @@ const handleAddCarType = async () => {
     const result = await carTypeStore.addCarTypeApi(tempCarType.value, tempOil.value);
     if (result) {
       await carTypeStore.getCarTypeApi();
-      notification.show('新增成功', 'success', 3000);
+      messageStore.show('新增成功', 'success', 3000);
       newCarType.value = null;
       tempCarType.value = '';
       tempOil.value = '';
     } else {
-      notification.show('新增失敗', 'error', 3000);
+      messageStore.show('新增失敗', 'error', 3000);
     }
   }
 };

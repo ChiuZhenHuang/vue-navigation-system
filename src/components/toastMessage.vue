@@ -1,18 +1,18 @@
 <template>
   <v-snackbar
-    v-model="notification.visible"
-    :color="notification.color"
-    :timeout="notification.timeout"
+    v-model="messageStore.visible"
+    :color="messageStore.color"
+    :timeout="messageStore.timeout"
     bottom
   >
-    {{ notification.message }}
+    {{ messageStore.message }}
     <template v-slot:actions>
-      <v-btn color="white" variant="text" @click="notification.visible = false"> Close </v-btn>
+      <v-btn color="white" variant="text" @click="messageStore.visible = false"> Close </v-btn>
     </template>
   </v-snackbar>
 </template>
 
 <script setup lang="ts">
-import { useNotificationStore } from '@/stores/notification';
-const notification = useNotificationStore();
+import { useMessageStore } from '@/stores/messageStore';
+const messageStore = useMessageStore();
 </script>

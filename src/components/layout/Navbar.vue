@@ -68,7 +68,7 @@
 import router from '@/router';
 import { ref, computed, onMounted, nextTick } from 'vue';
 import ToastMessage from '../toastMessage.vue';
-import { useNotificationStore } from '@/stores/notification';
+import { useMessageStore } from '@/stores/messageStore';
 import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useUserRecordStore } from '@/stores/userRecordStore';
@@ -78,13 +78,13 @@ const display = useDisplay();
 const isMobile = display.smAndDown;
 const route = useRoute();
 
-const notification = useNotificationStore();
+const messageStore = useMessageStore();
 const userRecordStore = useUserRecordStore();
 const userStore = useUserStore();
 
 onMounted(() => {
   const msg = window.history.state?.msg as string;
-  if (msg) notification.show(msg, 'success', 3000);
+  if (msg) messageStore.show(msg, 'success', 3000);
 });
 
 const firstName = computed(() =>
