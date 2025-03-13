@@ -7,12 +7,13 @@
   >
     {{ messageStore.message }}
     <template v-slot:actions>
-      <v-btn color="white" variant="text" @click="messageStore.visible = false"> Close </v-btn>
+      <Button color="white" variant="text" @click="messageStore.visible = false" label="Close" />
     </template>
   </v-snackbar>
 </template>
 
 <script setup lang="ts">
 import { useMessageStore } from '@/stores/messageStore';
+import Button from '@/components/ui/Button.vue';
 const messageStore = useMessageStore();
 </script>

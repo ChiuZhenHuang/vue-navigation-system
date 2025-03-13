@@ -9,7 +9,7 @@
       variant="outlined"
       v-model="selectedCar"
       @update:model-value="handleSelection"
-    ></v-select>
+    />
   </div>
 
   <Maps

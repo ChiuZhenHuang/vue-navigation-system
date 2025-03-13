@@ -37,17 +37,18 @@
           </p>
 
           <div v-if="userRecord.records && userRecord.records.length > 0">
-            <v-card
+            <Card
               v-for="(item, index) in userRecord.records"
               :key="index"
               :class="`my-2 ${index % 2 === 0 ? 'bg-orange-lighten-4' : 'bg-light-orange'}`"
             >
-              <template v-slot:title>
+              <template #title>
                 <span class="text-black font-weight-bold text-subtitle-1">{{
                   item.action.place
                 }}</span>
               </template>
-              <v-card-text>
+
+              <template #content>
                 <p>距離：{{ item.action.distance }}</p>
                 <p>花費時間：{{ item.action.time }}</p>
                 <p>使用車種：{{ item.action.carType }}</p>
@@ -66,19 +67,19 @@
                 <p class="text-grey-darken-1 text-caption">
                   {{ new Date(item.timestamp).toLocaleString() }}
                 </p>
-              </v-card-text>
-            </v-card>
+              </template>
+            </Card>
           </div>
 
           <div v-else class="d-flex flex-column align-center justify-center mt-6">
             <div class="my-6">您尚未有導航紀錄！</div>
-            <v-btn
+
+            <Button
               class="mt-2 w-100 w-sm-auto"
               color="orange-lighten-4"
               @click="$router.push('/layout/home')"
-            >
-              開始導航
-            </v-btn>
+              label="開始導航"
+            />
           </div>
         </div>
       </v-col>
@@ -90,7 +91,8 @@
 import { computed } from 'vue';
 import { calculateOilMoney, formatToThousand } from '@/utils/methods';
 import { useUserRecordStore } from '@/stores/userRecordStore';
-
+import Button from '@/components/ui/Button.vue';
+import Card from '@/components/ui/Card.vue';
 const userRecordStore = useUserRecordStore();
 
 const userRecord = computed(() => userRecordStore.userRecord);

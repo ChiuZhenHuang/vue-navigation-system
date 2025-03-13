@@ -3,74 +3,68 @@
     <ToastMessage />
     <v-row align="center" justify="center" class="fill-height mx-4">
       <v-col cols="12" sm="8" md="5" lg="4" style="max-width: 450px">
-        <v-card class="elevation-12 rounded-xl">
-          <v-toolbar dark flat height="80" class="content-card">
-            <div class="w-100 d-flex justify-center align-center">
-              <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
-            </div>
-          </v-toolbar>
-          <v-toolbar dark flat height="80" class="content-card">
-            <div class="d-flex flex-column align-center justify-center text-center w-100">
-              <div class="text-h5 mb-2 font-weight-bold text-orange">歡迎使用導航紀錄系統</div>
-              <div class="text-subtitle-2 text-slate">請登入開始您的旅程</div>
-            </div>
-          </v-toolbar>
-          <v-card-text>
+        <Card class="elevation-12 rounded-xl pb-4">
+          <template #content>
+            <v-toolbar dark flat height="80" class="content-card">
+              <div class="w-100 d-flex justify-center align-center">
+                <img src="@/assets/images/navigate.png" alt="navigate" width="65" height="65" />
+              </div>
+            </v-toolbar>
+            <v-toolbar dark flat height="80" class="content-card">
+              <div class="d-flex flex-column align-center justify-center text-center w-100">
+                <div class="text-h5 mb-2 font-weight-bold text-orange">歡迎使用導航紀錄系統</div>
+                <div class="text-subtitle-2 text-slate">請登入開始您的旅程</div>
+              </div>
+            </v-toolbar>
+          </template>
+          <template #subtitle>
             <v-form @submit.prevent="handleLogin">
-              <v-text-field
+              <TextField
                 v-model="email"
                 label="Email"
                 prepend-icon="mdi-email"
                 type="email"
                 required
+                variant="solo-filled"
                 :rules="formRules.emailRules"
                 class="mb-4"
-              ></v-text-field>
+              />
 
-              <v-text-field
+              <TextField
                 v-model="password"
                 label="密碼"
                 prepend-icon="mdi-lock"
                 :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="showPassword = !showPassword"
+                :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append-inner="showPassword = !showPassword"
                 required
+                variant="solo-filled"
                 :rules="formRules.passwordRules"
                 class="mb-4"
-              ></v-text-field>
+              />
 
-              <v-btn
-                block
+              <Button
                 type="submit"
+                block
                 :class="['mb-4', 'login-btn', { 'opacity-80': isLoading }]"
-              >
-                <div class="d-flex align-center justify-center">
-                  <v-progress-circular
-                    v-if="isLoading"
-                    indeterminate
-                    size="20"
-                    width="2"
-                    color="white"
-                    class="mr-2"
-                  ></v-progress-circular>
-                  登入
-                </div>
-              </v-btn>
+                :isLoading="isLoading"
+                label="登入"
+              />
 
               <router-link to="/register" class="text-decoration-none my-2">
-                <v-btn
-                  block
+                <Button
                   type="button"
                   color="white"
                   variant="text"
+                  block
                   class="border-sm border-black text-black"
                 >
                   <span class="text-black">還不是會員?前往註冊</span>
-                </v-btn>
+                </Button>
               </router-link>
             </v-form>
-          </v-card-text>
-        </v-card>
+          </template>
+        </Card>
       </v-col>
     </v-row>
   </v-container>
@@ -78,16 +72,20 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { loginUser } from '@/services/firebaseService';
+import { RouterLink } from 'vue-router';
 import router from '@/router';
 import type { userData } from '@/types/userType';
+import { loginUser } from '@/services/firebaseService';
 import { useMessageStore } from '@/stores/messageStore';
-import ToastMessage from '@/components/toastMessage.vue';
-import { RouterLink } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
+import ToastMessage from '@/components/toastMessage.vue';
+import Button from '@/components/ui/Button.vue';
+import TextField from '@/components/ui/TextField.vue';
+import Card from '@/components/ui/Card.vue';
 
 const messageStore = useMessageStore();
 const userStore = useUserStore();
+
 onMounted(() => {
   const msg = window.history.state?.msg as string;
   if (msg) messageStore.show(msg, 'success', 3000);

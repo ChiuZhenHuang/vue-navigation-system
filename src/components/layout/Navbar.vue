@@ -3,9 +3,9 @@
   <v-app>
     <!-- 頂部應用欄 -->
     <v-app-bar app dark style="background-color: rgb(255, 247, 237)">
-      <v-app-bar-nav-icon @click="drawer = !drawer" v-if="isMobile"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer" v-if="isMobile" />
       <v-toolbar-title class="text-end mr-2">
-        <!-- 使用 v-menu 讓頭像顯示下拉選單 -->
+        <!-- v-menu 讓頭像顯示下拉選單 -->
         <v-menu v-model="menu" offset-y>
           <template v-slot:activator="{ props }">
             <div class="x-4 d-flex justify-end align-center">
@@ -14,14 +14,13 @@
                   v-for="item in menuItems.filter(item => item.title !== '登出')"
                   :key="item.title"
                 >
-                  <v-btn
+                  <Button
                     color="black"
                     :variant="isActiveVariant(item.route)"
                     @click="navigateTo(item.route)"
                     class="text-black font-weight-bold text-subtitle-2"
-                  >
-                    {{ item.title }}
-                  </v-btn>
+                    :label="item.title"
+                  />
                 </template>
               </v-toolbar-title>
 
@@ -55,7 +54,7 @@
           @click="navigateTo(item.route)"
         >
           <template v-slot:prepend>
-            <v-icon :icon="item.icon"></v-icon>
+            <v-icon :icon="item.icon" />
           </template>
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
@@ -73,6 +72,7 @@ import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useUserRecordStore } from '@/stores/userRecordStore';
 import { useUserStore } from '@/stores/userStore';
+import Button from '@/components/ui/Button.vue';
 
 const display = useDisplay();
 const isMobile = display.smAndDown;

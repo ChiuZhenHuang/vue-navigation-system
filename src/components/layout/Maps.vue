@@ -2,7 +2,7 @@
   <v-card class="ma-2 pa-4">
     <div class="mb-4">
       <div class="mb-2">
-        <v-btn
+        <Button
           block
           :loading="isLocating"
           :disabled="isLocating"
@@ -11,42 +11,41 @@
           prepend-icon="mdi-map-marker"
         >
           {{ isLocating ? '定位中...' : '定位我的位置' }}
-        </v-btn>
+        </Button>
       </div>
 
       <div class="mt-4">
-        <v-text-field
+        <TextField
           ref="searchInputRef"
           v-model="searchInput"
-          placeholder="搜尋目的地..."
-          variant="outlined"
-          clearable
-          density="comfortable"
+          placeholder="搜尋目的地"
           prepend-inner-icon="mdi-magnify"
-          class="mb-2"
-        ></v-text-field>
+          clearable
+          variant="outlined"
+          density="comfortable"
+        />
       </div>
     </div>
 
     <v-row>
       <v-col cols="12" md="8">
         <div
+          v-if="isLoaded"
           ref="mapContainer"
           style="width: 100%; height: 500px"
-          v-if="isLoaded"
           class="rounded"
         ></div>
         <v-skeleton-loader v-else type="card" height="500" class="rounded"></v-skeleton-loader>
       </v-col>
 
       <v-col cols="12" md="4" v-if="routeInfo">
-        <v-card class="pa-4">
-          <v-card-text>
+        <Card class="pa-4" elevation="4">
+          <template #content>
             <div class="text-subtitle-1 mb-2">預估距離： {{ routeInfo.distance }}</div>
             <div class="text-subtitle-1 mb-4">預估時間： {{ routeInfo.duration }}</div>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
+          </template>
+          <template #actions>
+            <Button
               block
               @click="startNavigation"
               :disabled="!selectedPlace || !currentPosition"
@@ -54,17 +53,17 @@
               prepend-icon="mdi-navigation"
             >
               {{ isNavigating ? '導航中' : '開始導航' }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+            </Button>
+          </template>
+        </Card>
       </v-col>
 
       <v-col cols="12" md="4" v-else>
-        <v-card class="pa-4">
-          <v-card-actions>
-            <v-btn block disabled prepend-icon="mdi-navigation"> 請選擇導航地點及定位 </v-btn>
-          </v-card-actions>
-        </v-card>
+        <Card class="pa-4" disabled elevation="4">
+          <template #actions>
+            <Button block prepend-icon="mdi-navigation" label="請選擇導航地點及定位" />
+          </template>
+        </Card>
       </v-col>
     </v-row>
   </v-card>
@@ -84,6 +83,9 @@ import { useUserStore } from '@/stores/userStore';
 import ToastMessage from '../toastMessage.vue';
 import type { CarTypes } from '@/types/carTypes';
 import type { Action } from '@/types/recordType';
+import Button from '@/components/ui/Button.vue';
+import TextField from '@/components/ui/TextField.vue';
+import Card from '@/components/ui/Card.vue';
 
 const props = defineProps({
   userId: {
@@ -135,7 +137,6 @@ const directionsRenderer = ref<google.maps.DirectionsRenderer | null>(null);
 const mapContainer = ref<HTMLElement | null>(null);
 
 watch(isLoaded, newValue => {
-  console.log('isLoaded', newValue);
   if (newValue) emit('loadingStatus', true);
 });
 

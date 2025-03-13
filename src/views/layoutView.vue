@@ -3,25 +3,28 @@
   <BreadCrunms />
   <router-view :key="$route.fullPath" />
 
-  <v-btn
+  <Button
     v-show="showScrollTop"
     @click="scrollToTop"
     icon="mdi-chevron-up"
     color="orange-darken-2"
     :style="{ position: 'fixed', bottom: '16px', right: '16px' }"
     class="mb-4 me-4"
-  ></v-btn>
+  >
+    <v-icon icon="mdi-chevron-up" />
+  </Button>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
 import router from '@/router';
 import { RouterView } from 'vue-router';
+import { useUserRecordStore } from '@/stores/userRecordStore';
+import { getCookie } from '@/utils/methods';
+import { useUserStore } from '@/stores/userStore';
 import Navbar from '@/components/layout/Navbar.vue';
 import BreadCrunms from '@/components/layout/BreadCrunms.vue';
-import { getCookie } from '@/utils/methods';
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useUserRecordStore } from '@/stores/userRecordStore';
-import { useUserStore } from '@/stores/userStore';
+import Button from '@/components/ui/Button.vue';
 
 const userRecordStore = useUserRecordStore();
 const userStore = useUserStore();

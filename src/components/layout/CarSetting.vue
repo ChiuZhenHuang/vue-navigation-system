@@ -6,41 +6,39 @@
   </v-container>
 
   <v-container v-else>
-    <v-btn
+    <Button
       @click="handleUpdateCarType"
       :disabled="!selectedCar"
       color="orange-lighten-4"
       class="mr-4"
-      >儲存</v-btn
-    >
-    <v-btn @click="handleAddCarType" :disabled="!!selectedCar" color="orange-lighten-4" class="mr-4"
-      >新增</v-btn
-    >
-    <v-btn @click="cancelAddCarType" v-if="newCarType" color="orange-darken-2" class="mr-4"
-      >取消</v-btn
-    >
+      label="儲存"
+    />
+
+    <Button
+      @click="handleAddCarType"
+      :disabled="!!selectedCar"
+      color="orange-lighten-4"
+      class="mr-4"
+      label="新增"
+    />
+
+    <Button
+      @click="cancelAddCarType"
+      v-if="newCarType"
+      color="orange-darken-1"
+      class="mr-4"
+      label="取消"
+    />
 
     <!-- 新增之車款 -->
     <div v-if="newCarType" :key="newCarType.carType">
       <v-responsive class="mx-auto mt-4 px-2 border-b-md border-black" width="100%">
         <v-row>
           <v-col cols="12" sm="6" class="my-2">
-            <v-text-field
-              hide-details="auto"
-              label="車款"
-              v-model="tempCarType"
-              variant="outlined"
-            ></v-text-field>
+            <TextField v-model="tempCarType" label="車款" variant="outlined" />
           </v-col>
           <v-col cols="12" sm="6" class="my-2">
-            <v-text-field
-              hide-details="auto"
-              label="油耗"
-              v-model="tempOil"
-              variant="outlined"
-              type="number"
-              min="0"
-            ></v-text-field>
+            <TextField v-model="tempOil" label="油耗" variant="outlined" type="number" min="0" />
           </v-col>
         </v-row>
       </v-responsive>
@@ -51,30 +49,28 @@
       <v-responsive class="mx-auto mt-4 px-2 border-b-md border-black" width="100%">
         <v-row>
           <v-col cols="12" sm="6" class="my-2">
-            <v-text-field
-              hide-details="auto"
-              label="車款"
+            <TextField
               :model-value="car.carType"
+              label="車款"
               readonly
+              variant="outlined"
               :disabled="
                 !!newCarType || (selectedCar !== null && selectedCar?.carType !== car.carType)
               "
-              variant="outlined"
-            ></v-text-field>
+            />
           </v-col>
           <v-col cols="12" sm="6" class="my-2">
-            <v-text-field
-              hide-details="auto"
-              label="油耗"
+            <TextField
               :model-value="selectedCar?.carType === car.carType ? selectedCar.oil : car.oil"
-              variant="outlined"
+              label="油耗"
               type="number"
+              variant="outlined"
               min="0"
               @update:model-value="updateCarOil(car, $event)"
               :disabled="
                 !!newCarType || (selectedCar !== null && selectedCar?.carType !== car.carType)
               "
-            ></v-text-field>
+            />
           </v-col>
         </v-row>
       </v-responsive>
@@ -87,6 +83,8 @@ import { useCarTypeStore } from '@/stores/carTypeStore';
 import { onMounted, ref, computed } from 'vue';
 import type { CarTypes } from '@/types/carTypes';
 import { useMessageStore } from '@/stores/messageStore';
+import Button from '@/components/ui/Button.vue';
+import TextField from '@/components/ui/TextField.vue';
 
 const carTypeStore = useCarTypeStore();
 const messageStore = useMessageStore();

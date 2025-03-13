@@ -37,7 +37,7 @@
         </v-list-item>
       </v-list>
 
-      <v-pagination v-model="navigationPage" :length="totalPages" :total-visible="5"></v-pagination>
+      <v-pagination v-model="navigationPage" :length="totalPages" :total-visible="5" />
     </div>
   </v-container>
 </template>

@@ -43,8 +43,17 @@ export interface TotalUserDataRecord {
   records?: ActionResponse[];
 }
 
-export interface TaskProgress {
+export interface PercentProgress {
   distance: string;
   count: string;
   oil: string;
+}
+
+export interface TaskProgress {
+  title: string;
+  current: string;
+  target: string;
+  unit: string;
+  percent: string;
+  point: string;
 }

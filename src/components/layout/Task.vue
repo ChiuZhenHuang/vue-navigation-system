@@ -24,14 +24,11 @@
         </div>
       </v-col>
 
-      <v-col cols="12">
+      <v-col v-for="(item, index) in progressItems" :key="index" cols="12">
         <v-sheet class="pa-4 mx-auto" color="orange-lighten-4 elevation-10" rounded="lg">
           <div class="d-flex justify-space-between align-center">
-            <p class="text-subtitle-1 mb-4 font-weight-bold">{{ taskOptions[0].title }}</p>
-            <p>
-              {{ formatToThousand(String(totalRecord?.totalDistance)) }} /
-              {{ formatToThousand(taskOptions[0].target) }} km
-            </p>
+            <p class="text-subtitle-1 mb-4 font-weight-bold">{{ item.title }}</p>
+            <p>{{ item.current }} / {{ item.target }} {{ item.unit }}</p>
           </div>
           <div class="d-flex align-center">
             <v-progress-linear
@@ -39,93 +36,38 @@
               bg-color="deep-grey"
               color="orange"
               height="12"
-              :model-value="percentProgress?.distance"
+              :model-value="item.percent"
               rounded
-            ></v-progress-linear>
-            <div class="ms-4 text-h6">{{ percentProgress?.distance }}%</div>
+            />
+            <div class="ms-4 text-h6">{{ item.percent }}%</div>
           </div>
-          <v-btn
-            color="white"
-            variant="outlined"
-            class="text-subtitle-1 mb-4 font-weight-bold mt-2 bg-orange-lighten-2 rounded-lg"
-          >
-            <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ formatToThousand(taskOptions[0].point) }}積分
-          </v-btn>
-        </v-sheet>
-      </v-col>
 
-      <v-col cols="12">
-        <v-sheet class="pa-4 mx-auto" color="orange-lighten-4 elevation-10" rounded="lg">
-          <div class="d-flex justify-space-between align-center">
-            <p class="text-subtitle-1 mb-4 font-weight-bold">{{ taskOptions[1].title }}</p>
-            <p>{{ totalRecord?.totalCount }} / {{ taskOptions[1].target }}次</p>
-          </div>
-          <div class="d-flex align-center">
-            <v-progress-linear
-              class="flex-grow-1"
-              bg-color="deep-grey"
-              color="orange"
-              height="12"
-              :model-value="percentProgress?.count"
-              rounded
-            ></v-progress-linear>
-            <div class="ms-4 text-h6">{{ percentProgress?.count }}%</div>
-          </div>
-          <v-btn
+          <Button
             color="white"
             variant="outlined"
             class="text-subtitle-1 mb-4 font-weight-bold mt-2 bg-orange-lighten-2 rounded-lg"
           >
-            <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ formatToThousand(taskOptions[1].point) }}積分
-          </v-btn>
-        </v-sheet>
-      </v-col>
-
-      <v-col cols="12">
-        <v-sheet class="pa-4 mx-auto" color="orange-lighten-4 elevation-10" rounded="lg">
-          <div class="d-flex justify-space-between align-center">
-            <p class="text-subtitle-1 mb-4 font-weight-bold">{{ taskOptions[2].title }}</p>
-            <p>
-              {{ formatToThousand(String(totalRecord?.totalOil)) }} /
-              {{ formatToThousand(taskOptions[2].target) }}元
-            </p>
-          </div>
-          <div class="d-flex align-center">
-            <v-progress-linear
-              class="flex-grow-1"
-              bg-color="deep-grey"
-              color="orange"
-              height="12"
-              :model-value="percentProgress?.oil"
-              rounded
-            ></v-progress-linear>
-            <div class="ms-4 text-h6">{{ percentProgress?.oil }}%</div>
-          </div>
-          <v-btn
-            color="white"
-            variant="outlined"
-            class="text-subtitle-1 mb-4 font-weight-bold mt-2 bg-orange-lighten-2 rounded-lg"
-          >
-            <v-icon start icon="mdi-star" class="me-1"></v-icon>
-            {{ formatToThousand(taskOptions[2].point) }}積分
-          </v-btn>
+            <v-icon start icon="mdi-star" class="me-1" />
+            {{ formatToThousand(item.point) }}積分
+          </Button>
         </v-sheet>
       </v-col>
     </v-row>
+
     <v-row>
       <v-col cols="12">
-        <v-card
+        <Card
           class="py-4 text-center d-flex flex-column bg-orange-lighten-4 rounded-lg elevation-10"
         >
-          <v-card-title
+          <template
+            #title
             class="text-slate-600 font-weight-bold text-h6 d-flex justify-center align-center py-2"
           >
             <v-icon icon="mdi-crown" class="mr-2" color="amber"></v-icon>
             本週成就
-          </v-card-title>
-          <v-card-text>
+          </template>
+
+          <template #content>
             <v-row>
               <v-col cols="4" class="d-flex justify-center">
                 <div>
@@ -156,8 +98,8 @@
                 </div>
               </v-col>
             </v-row>
-          </v-card-text>
-        </v-card>
+          </template>
+        </Card>
       </v-col>
     </v-row>
   </v-container>
@@ -172,8 +114,10 @@ import {
   formatToThousand,
   taskOptions,
 } from '@/utils/methods';
+import Button from '@/components/ui/Button.vue';
+import type { TotalRecord, PercentProgress, TaskProgress } from '@/types/recordType';
+import Card from '@/components/ui/Card.vue';
 
-import type { TotalRecord, TaskProgress } from '@/types/recordType';
 const userRecordStore = useUserRecordStore();
 
 const userRecordData = computed(() => userRecordStore.userRecord);
@@ -182,7 +126,7 @@ const finalPercent = ref(0); // 總進度百分比
 const overachievedCount = ref(0); // 幾個達到目標
 const totalPoints = ref(0); // 總積分
 const totalRecord = ref<TotalRecord | null>(null); // 所有里程/油耗/次數(不超過目標)
-const percentProgress = ref<TaskProgress | null>(null); // 各別的里程/油耗/次數百分比
+const percentProgress = ref<PercentProgress | null>(null); // 各別的里程/油耗/次數百分比
 
 // 計算里程/油耗/次數
 watch(
@@ -251,4 +195,34 @@ watch(
   },
   { immediate: true }
 );
+
+// 最後產出各別任務的所有資料
+const progressItems = computed<TaskProgress[]>(() => {
+  return [
+    {
+      title: taskOptions[0].title,
+      current: totalRecord.value ? formatToThousand(String(totalRecord.value.totalDistance)) : '0',
+      target: formatToThousand(taskOptions[0].target),
+      unit: 'km',
+      percent: percentProgress.value?.distance || '0',
+      point: taskOptions[0].point,
+    },
+    {
+      title: taskOptions[1].title,
+      current: totalRecord.value?.totalCount || '0',
+      target: taskOptions[1].target,
+      unit: '次',
+      percent: percentProgress.value?.count || '0',
+      point: taskOptions[1].point,
+    },
+    {
+      title: taskOptions[2].title,
+      current: totalRecord.value ? formatToThousand(String(totalRecord.value.totalOil)) : '0',
+      target: formatToThousand(taskOptions[2].target),
+      unit: '元',
+      percent: percentProgress.value?.oil || '0',
+      point: taskOptions[2].point,
+    },
+  ];
+});
 </script>
