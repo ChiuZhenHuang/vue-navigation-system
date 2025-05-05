@@ -120,7 +120,8 @@ const handleLogin = async () => {
       tomorrow.setDate(tomorrow.getDate() + 1);
       document.cookie = `token=${token};expires=${tomorrow.toUTCString()}`;
       document.cookie = `uid=${uid};expires=${tomorrow.toUTCString()}`;
-      console.log('登入成功:', result);
+      // console.log('登入成功:', result);
+      console.log('登入成功2:', result);
       router.push({ path: 'layout/home', state: { msg: '登入成功！' } });
     } else {
       console.log('登入失敗:', result.error);
