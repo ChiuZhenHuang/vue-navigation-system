@@ -49,7 +49,7 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import { UserOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, RobotOutlined } from '@ant-design/icons-vue';
 import { Flex, message as AntMessage } from 'ant-design-vue';
 import { Bubble, Sender, useXAgent, useXChat, type BubbleListProps } from 'ant-design-x-vue';
 import { ref, h } from 'vue';
@@ -82,7 +82,7 @@ const [messageApi] = AntMessage.useMessage();
 const roles: BubbleListProps['roles'] = {
   ai: {
     placement: 'start',
-    avatar: { icon: h(UserOutlined), style: { background: '#fde3cf' } },
+    avatar: { icon: h(RobotOutlined), style: { background: '#fde3cf' } },
     typing: { step: 5, interval: 20 },
     style: { maxWidth: '600px' },
   },
