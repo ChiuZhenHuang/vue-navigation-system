@@ -9,6 +9,7 @@ import '@mdi/font/css/materialdesignicons.css';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import 'vuetify/styles/main.css';
+import AntX from 'ant-design-x-vue';
 
 // 先不使用tailwind
 // import './tailwind.css';
@@ -26,4 +27,5 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.use(vuetify);
+app.use(AntX);
 app.mount('#app');

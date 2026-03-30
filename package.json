@@ -10,10 +10,14 @@
     "lint": "eslint --ext .js,.ts,.vue ."
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@google/generative-ai": "^0.24.1",
     "@googlemaps/js-api-loader": "^1.16.8",
     "@mdi/font": "^7.4.47",
     "@tailwindcss/postcss": "^4.0.12",
     "@typescript-eslint/parser": "^6.0.0",
+    "ant-design-vue": "^4.2.6",
+    "ant-design-x-vue": "^1.6.0",
     "axios": "^1.8.2",
     "firebase": "^11.4.0",
     "lucide-vue-next": "^0.479.0",
